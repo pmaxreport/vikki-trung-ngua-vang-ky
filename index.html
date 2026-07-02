@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vikki × PMAX · Trúng Ngựa Vàng Ký — Live Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+:root{
+  --purple:#6D28D9; --purple-2:#8B5CF6; --purple-soft:#EDE7FB; --purple-ink:#4C1D95;
+  --gold:#F59E0B; --gold-deep:#B45309; --gold-soft:#FEF3C7;
+  --tt:#E11D74; --tt-soft:#FCE7F1;
+  --fb:#6D28D9; --fb-soft:#EDE7FB;
+  --ink:#1E1B2E; --muted:#6B6786; --line:#EBE8F2; --paper:#FBFAFE; --card:#FFFFFF;
+  --good:#0F9D6B; --good-soft:#E3F5EE; --warn:#DC2626; --warn-soft:#FDECEC;
+  --shadow:0 1px 2px rgba(76,29,149,.05),0 6px 20px rgba(76,29,149,.06);
+}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.tscroll{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.tscroll table{min-width:520px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 72px}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(251,250,254,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1120px;margin:0 auto;padding:12px 20px;display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .coin{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-deep));display:grid;place-items:center;color:#fff;font-weight:800;font-family:'Plus Jakarta Sans';box-shadow:0 3px 10px rgba(180,83,9,.35);flex:none}
+.brand b{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;letter-spacing:-.2px}
+.brand span{display:block;font-size:11px;color:var(--muted);font-weight:500}
+.filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip-btn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:5px 11px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.chip-btn:hover{border-color:var(--purple-2);color:var(--purple)}
+.chip-btn.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.custom-range{display:none;gap:6px;align-items:center;margin-left:2px}
+.custom-range.show{display:flex}
+.custom-range input{border:1px solid var(--line);border-radius:8px;padding:4px 7px;font-size:12px;font-family:inherit;color:var(--ink)}
+.range-note{font-size:11.5px;color:var(--muted);margin-left:2px}
+
+/* ---------- hero ---------- */
+.hero{padding:26px 0 6px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep)}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--gold);border-radius:2px}
+.hero h1{font-size:30px;line-height:1.12;letter-spacing:-.6px;margin:10px 0 6px}
+.hero h1 .g{background:linear-gradient(90deg,var(--gold-deep),var(--gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{color:var(--muted);font-size:13.5px;max-width:680px}
+.live-tag{display:inline-flex;align-items:center;gap:6px;background:var(--good-soft);color:var(--good);font-weight:700;font-size:11.5px;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:middle}
+.live-tag i{width:7px;height:7px;border-radius:50%;background:var(--good);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ---------- section ---------- */
+section{margin-top:30px;scroll-margin-top:80px}
+.sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.sec-num{font-family:'Plus Jakarta Sans';font-weight:800;font-size:13px;color:#fff;background:var(--purple);width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex:none;transform:translateY(3px)}
+.sec-head h2{font-size:20px;letter-spacing:-.3px}
+.sec-desc{color:var(--muted);font-size:12.5px;margin:0 0 14px 38px}
+.scope-tag{display:inline-block;font-size:11px;font-weight:600;color:var(--purple);background:var(--purple-soft);border-radius:6px;padding:1px 8px;margin-left:6px}
+
+/* summary + next */
+.sn{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 16px}
+.sn .box{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--card);box-shadow:var(--shadow)}
+.sn .box.sum{border-left:3px solid var(--purple)}
+.sn .box.next{border-left:3px solid var(--gold)}
+.sn h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.sn .box.sum h4{color:var(--purple-ink)} .sn .box.next h4{color:var(--gold-deep)}
+.sn ul{margin:0;padding-left:16px} .sn li{margin:4px 0;font-size:12.8px}
+.sn li b{color:var(--ink)}
+
+/* cards / grid */
+.grid{display:grid;gap:12px}
+.kpis{grid-template-columns:repeat(4,1fr)}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 15px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi.hl{border-color:var(--gold);background:linear-gradient(180deg,var(--gold-soft),#fff)}
+.kpi.hl2{border-color:var(--purple-2);background:linear-gradient(180deg,var(--purple-soft),#fff)}
+.kpi .lab{font-size:11.5px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px}
+.kpi .val{font-family:'Plus Jakarta Sans';font-weight:800;font-size:22px;letter-spacing:-.5px;margin:5px 0 2px}
+.kpi .sub{font-size:11.5px;color:var(--muted)}
+.kpi .sub .up{color:var(--good);font-weight:700} .kpi .sub .dn{color:var(--warn);font-weight:700}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+.panel-t{font-family:'Plus Jakarta Sans';font-weight:700;font-size:14px;margin-bottom:2px}
+.panel-s{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+
+/* pacing bar */
+.pace{height:9px;background:var(--purple-soft);border-radius:999px;overflow:hidden;margin:6px 0 2px}
+.pace > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--gold),var(--gold-deep))}
+.pace-lab{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:12.8px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700;border-bottom:2px solid var(--line)}
+tbody tr:hover{background:var(--paper)}
+tr.total td{font-weight:800;background:var(--purple-soft);border-top:2px solid var(--purple-2);color:var(--purple-ink)}
+.tag-obj{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.dot{width:9px;height:9px;border-radius:3px;flex:none;display:inline-block}
+.chip{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px}
+.chip.good{background:var(--good-soft);color:var(--good)} .chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.neu{background:var(--purple-soft);color:var(--purple)}
+
+/* objective tabs */
+.otabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.otab{border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 13px;cursor:pointer;transition:.15s;text-align:left;min-width:120px}
+.otab:hover{border-color:var(--purple-2)}
+.otab.on{border-color:var(--purple);box-shadow:0 0 0 2px var(--purple-soft) inset}
+.otab .n{font-size:11px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:5px}
+.otab .b{font-family:'Plus Jakarta Sans';font-weight:800;font-size:15px;margin-top:2px}
+.otab .p{font-size:10.5px;color:var(--muted)}
+
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.m{border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:var(--paper)}
+.m .k{font-size:11px;color:var(--muted);font-weight:600}
+.m .pa{display:flex;align-items:baseline;gap:8px;margin-top:3px}
+.m .pa .plan{font-size:12px;color:var(--muted)}
+.m .pa .act{font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px}
+.m .note{font-size:10.5px;color:var(--muted);margin-top:2px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chartbox{position:relative;height:260px}
+.chartbox.sm{height:220px}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--muted);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* channel split */
+.chsplit{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.chcard{border-radius:16px;padding:2px;box-shadow:var(--shadow)}
+.chcard.fb{background:linear-gradient(180deg,var(--fb),#a78bfa 120%)}
+.chcard.tt{background:linear-gradient(180deg,var(--tt),#f472b6 120%)}
+.chcard .in{background:#fff;border-radius:14px;padding:16px;height:100%}
+.chcard .hd{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+.chcard .hd .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-family:'Plus Jakarta Sans';flex:none}
+.chcard.fb .ic{background:var(--fb)} .chcard.tt .ic{background:var(--tt)}
+.chcard .hd b{font-family:'Plus Jakarta Sans';font-size:16px}
+.chcard .role{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+.chstat{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:12.5px}
+.chstat:last-child{border-bottom:0}
+.chstat .v{font-family:'Plus Jakarta Sans';font-weight:800}
+
+/* audience */
+.audrow{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.audrow:last-child{border-bottom:0}
+.audrow .name{font-weight:700;font-size:12.5px} .audrow .name small{display:block;color:var(--muted);font-weight:500;font-size:11px}
+.audrow .name .pri{font-size:9.5px;font-weight:800;color:var(--gold-deep);background:var(--gold-soft);padding:1px 6px;border-radius:999px;margin-left:4px}
+.covbar{height:22px;background:var(--line);border-radius:7px;position:relative;overflow:hidden}
+.covbar > i{position:absolute;left:0;top:0;height:100%;border-radius:7px}
+.covbar .txt{position:absolute;right:8px;top:0;height:100%;display:flex;align-items:center;font-size:11px;font-weight:700;color:var(--ink)}
+
+.note-box{border:1px dashed var(--purple-2);background:var(--purple-soft);border-radius:12px;padding:11px 14px;font-size:11.8px;color:var(--purple-ink);margin-top:14px}
+.note-box b{color:var(--purple-ink)}
+.footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px;text-align:center;line-height:1.7}
+
+@media(max-width:820px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .two,.chsplit,.sn{grid-template-columns:1fr}
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .audrow{grid-template-columns:1fr}
+  .hero h1{font-size:24px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="coin">V</div>
+      <div><b>Vikki × PMAX</b><span>Trúng Ngựa Vàng Ký · mùa 3</span></div>
+    </div>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="topbar-in" style="padding-top:0;justify-content:flex-start;gap:10px">
+    <div class="custom-range" id="customRange">
+      <span style="font-size:11.5px;color:var(--muted);font-weight:600">Từ</span>
+      <input type="date" id="cFrom"><span style="font-size:11.5px;color:var(--muted);font-weight:600">đến</span><input type="date" id="cTo">
+      <button class="chip-btn on" id="cApply">Áp dụng</button>
+    </div>
+    <div class="range-note" id="rangeNote"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="eyebrow">Live performance report</span>
+    <h1>Tiết kiệm <span class="g">Trúng Ngựa Vàng Ký</span><span class="live-tag"><i></i>đang chạy</span></h1>
+    <div class="sub" id="heroSub"></div>
+  </div>
+
+  <!-- 1. OVERVIEW -->
+  <section id="s1">
+    <div class="sec-head"><div class="sec-num">1</div><h2>Tổng quan hiệu suất</h2></div>
+    <div class="sec-desc">Toàn cảnh chiến dịch theo khoảng thời gian đã chọn — ưu tiên 2 chỉ số khách quan tâm: <b>độ phủ trên poolsize</b> và <b>lượt đăng ký app</b>.</div>
+    <div class="sn" id="sn1"></div>
+    <div class="grid kpis" id="kpiGrid" style="margin-bottom:12px"></div>
+    <div class="two">
+      <div class="panel">
+        <div class="panel-t">Ngân sách media · Thực chi so với kế hoạch</div>
+        <div class="panel-s" id="paceSub"></div>
+        <div id="paceWrap"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-t">Phân bổ thực chi theo mục tiêu</div>
+        <div class="panel-s">Tỷ trọng ngân sách đã tiêu giữa 5 mục tiêu (khoảng đang chọn)</div>
+        <div class="chartbox sm"><canvas id="chMix"></canvas></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <div class="panel-t">Bảng Kế hoạch → Thực tế theo mục tiêu</div>
+      <div class="panel-s">Ngân sách kế hoạch là <b>toàn chiến dịch</b> (media plan 22/6, đã điều chỉnh); thực tế theo khoảng đang chọn.</div>
+      <div class="tscroll"><table id="objTable"></table></div>
+    </div>
+  </section>
+
+  <!-- 2. OBJECTIVE -->
+  <section id="s2">
+    <div class="sec-head"><div class="sec-num">2</div><h2>Phân tích theo Mục tiêu</h2></div>
+    <div class="sec-desc">5 mục tiêu — mỗi mục tiêu so <b>Kế hoạch vs Thực tế</b> đầy đủ đơn giá (CPM/CPE/CPV/CPC/CPI/CPFL) và tỷ lệ (VR/CTR/ER/CR/Freq).</div>
+    <div class="sn" id="sn2"></div>
+    <div class="otabs" id="otabs"></div>
+    <div class="panel" id="objDetail"></div>
+  </section>
+
+  <!-- 3. CONTENT -->
+  <section id="s3">
+    <div class="sec-head"><div class="sec-num">3</div><h2>Phân tích theo Tuyến nội dung<span class="scope-tag">toàn chiến dịch</span></h2></div>
+    <div class="sec-desc">Tuyến (pillar) nào hiệu quả nhất theo từng mục tiêu, và angle nào đang kéo kết quả tốt nhất.</div>
+    <div class="sn" id="sn3"></div>
+    <div class="two">
+      <div class="panel">
+        <div class="panel-t">Hiệu quả theo tuyến nội dung × mục tiêu</div>
+        <div class="panel-s">Facebook: <b>AWO</b> vs <b>Livestream</b> · TikTok: <b>Sự kiện</b> vs <b>SPDV/CTKM</b> — chỉ số đơn giá tương đối (100 = TB mục tiêu, thấp hơn = tốt hơn)</div>
+        <div class="chartbox"><canvas id="chPillar"></canvas></div>
+        <div class="legend" id="pillarLeg"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-t">Top angle theo hiệu quả</div>
+        <div class="panel-s">Xếp theo đơn giá của mục tiêu chính mỗi angle phục vụ (chỉ tính angle có chi tiêu đáng kể)</div>
+        <div class="tscroll"><table id="angleTable"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. CHANNEL -->
+  <section id="s4">
+    <div class="sec-head"><div class="sec-num">4</div><h2>Phân tích theo Kênh</h2></div>
+    <div class="sec-desc">Facebook và TikTok tách bạch — vai trò, ngân sách, sản lượng và đơn giá của từng kênh (khoảng đang chọn).</div>
+    <div class="sn" id="sn4"></div>
+    <div class="chsplit" id="chSplit"></div>
+    <div class="panel" style="margin-top:12px">
+      <div class="panel-t">Ngân sách theo Kênh × Mục tiêu</div>
+      <div class="panel-s">Mỗi kênh gánh những mục tiêu khác nhau — thanh xếp chồng theo thực chi</div>
+      <div class="chartbox"><canvas id="chChObj"></canvas></div>
+      <div class="legend" id="chObjLeg"></div>
+    </div>
+  </section>
+
+  <!-- 5. AUDIENCE -->
+  <section id="s5">
+    <div class="sec-head"><div class="sec-num">5</div><h2>Phân tích theo Tệp khán giả<span class="scope-tag">toàn chiến dịch</span></h2></div>
+    <div class="sec-desc">Ưu tiên tệp <b>Senior 36–65</b> (tệp primary của khách) — quy mô pool, độ phủ, chi tiêu và hiệu quả, tách riêng 2 kênh.</div>
+    <div class="sn" id="sn5"></div>
+    <div class="two">
+      <div class="panel">
+        <div class="hd" style="display:flex;align-items:center;gap:9px;margin-bottom:2px"><span class="dot" style="background:var(--fb);width:12px;height:12px"></span><span class="panel-t" style="margin:0">Facebook — Senior vs Young</span></div>
+        <div class="panel-s">Độ phủ ước tính trên poolsize từng tệp (reach kế hoạch / pool)</div>
+        <div id="audFB"></div>
+      </div>
+      <div class="panel">
+        <div class="hd" style="display:flex;align-items:center;gap:9px;margin-bottom:2px"><span class="dot" style="background:var(--tt);width:12px;height:12px"></span><span class="panel-t" style="margin:0">TikTok — Senior vs Young</span></div>
+        <div class="panel-s">Độ phủ ước tính trên poolsize từng tệp (reach kế hoạch / pool)</div>
+        <div id="audTT"></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <div class="panel-t">Chi tiêu & hiệu quả theo tệp (toàn chiến dịch)</div>
+      <div class="panel-s">Tổng hợp mọi mục tiêu — Senior là tệp được đầu tư chính</div>
+      <div class="tscroll"><table id="audTable"></table></div>
+    </div>
+    <div class="note-box" id="reachNote"></div>
+  </section>
+
+  <div class="footer" id="footer"></div>
+</div>
+
+<script>
+/* ============================================================
+   DATA — validated from Master File (FB_PAXY + TT_PAXY actuals,
+   Media plan 22Jun for KPI). Swap loadData() to a live endpoint
+   (see delivery notes) to make this auto-refresh.
+   ============================================================ */
+const DATA = /*__DATA__*/{"plan": {"total_media": 804977591, "total_before_vat": 972210515.5, "obj": {"reach": {"budget": 288742367, "CPM": 8400, "impr": 33727554, "reach": 14744661, "freq": null}, "eng": {"budget": 109931905, "CPE": 1260, "eng": null}, "view": {"budget": 37568250, "CPV": 850}, "pagefol": {"budget": 146682067, "CPFL": null, "qty": 42699}, "app": {"budget": 222053002, "CPI": 18500, "install": 12003, "reg": 1030}}, "line": {"fb_reach": 208911229, "fb_eng": 210705988, "tt_reach": 79831138, "tt_view": 83476234, "app": 222053002}}, "pool": {"FB": {"Senior": 17200000, "Young": 12400000, "RET": 248600}, "TT": {"Senior": 7650000, "Young": 14900000}, "plan_reach": {"FB": 11567648, "TT": 3177013}}, "daily": [{"date": "2026-04-14", "obj": "eng", "ch": "FB", "spend": 12289619, "impr": 660642.0, "reach": 627026.0, "video": 184812.0, "eng": 125385.0, "click": 3883.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 11.0}, {"date": "2026-04-14", "obj": "reach", "ch": "FB", "spend": 15555331, "impr": 1540261.0, "reach": 1453502.0, "video": 0.0, "eng": 116296.0, "click": 4344.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 8.0}, {"date": "2026-04-15", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-16", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-17", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-19", "obj": "reach", "ch": "FB", "spend": 110597, "impr": 30846.0, "reach": 28031.0, "video": 0.0, "eng": 26.0, "click": 37.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-20", "obj": "pagefol", "ch": "FB", "spend": 768340, "impr": 10938.0, "reach": 8997.0, "video": 0.0, "eng": 3857.0, "click": 880.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 421.0}, {"date": "2026-04-20", "obj": "reach", "ch": "FB", "spend": 708332, "impr": 157557.0, "reach": 150457.0, "video": 0.0, "eng": 697.0, "click": 241.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-21", "obj": "eng", "ch": "FB", "spend": 2851516, "impr": 175268.0, "reach": 170960.0, "video": 59094.0, "eng": 36849.0, "click": 1311.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-04-21", "obj": "pagefol", "ch": "FB", "spend": 903588, "impr": 12513.0, "reach": 10022.0, "video": 0.0, "eng": 4675.0, "click": 1043.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 407.0}, {"date": "2026-04-21", "obj": "reach", "ch": "FB", "spend": 5014150, "impr": 660762.0, "reach": 613487.0, "video": 0.0, "eng": 32542.0, "click": 1602.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3.0}, {"date": "2026-04-22", "obj": "app", "ch": "TT", "spend": 390914, "impr": 71939.0, "reach": 68281.0, "video": 9221.0, "eng": 0.0, "click": 926.0, "install": 52.0, "reg": 1.0, "follow": 4.0, "pagelike": 0.0}, {"date": "2026-04-22", "obj": "eng", "ch": "FB", "spend": 84797, "impr": 7977.0, "reach": 7746.0, "video": 4375.0, "eng": 2745.0, "click": 51.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-22", "obj": "pagefol", "ch": "FB", "spend": 705677, "impr": 8494.0, "reach": 7398.0, "video": 0.0, "eng": 3124.0, "click": 731.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 314.0}, {"date": "2026-04-22", "obj": "reach", "ch": "FB", "spend": 1006591, "impr": 162381.0, "reach": 127080.0, "video": 0.0, "eng": 1966.0, "click": 371.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-23", "obj": "app", "ch": "TT", "spend": 946805, "impr": 96750.0, "reach": 77660.0, "video": 7633.0, "eng": 0.0, "click": 935.0, "install": 149.0, "reg": 9.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-23", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-23", "obj": "reach", "ch": "TT", "spend": 1123258, "impr": 244005.0, "reach": 242108.0, "video": 12298.0, "eng": 0.0, "click": 351.0, "install": 0.0, "reg": 0.0, "follow": 10.0, "pagelike": 0.0}, {"date": "2026-04-24", "obj": "app", "ch": "TT", "spend": 1525551, "impr": 47001.0, "reach": 37330.0, "video": 5861.0, "eng": 0.0, "click": 2817.0, "install": 533.0, "reg": 5.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-04-24", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-24", "obj": "reach", "ch": "TT", "spend": 999786, "impr": 202586.0, "reach": 200958.0, "video": 11475.0, "eng": 0.0, "click": 231.0, "install": 0.0, "reg": 0.0, "follow": 9.0, "pagelike": 0.0}, {"date": "2026-04-25", "obj": "app", "ch": "TT", "spend": 1243467, "impr": 7223.0, "reach": 4040.0, "video": 1701.0, "eng": 0.0, "click": 2811.0, "install": 654.0, "reg": 7.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-25", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-25", "obj": "reach", "ch": "TT", "spend": 996826, "impr": 211384.0, "reach": 210149.0, "video": 12363.0, "eng": 0.0, "click": 297.0, "install": 0.0, "reg": 0.0, "follow": 5.0, "pagelike": 0.0}, {"date": "2026-04-26", "obj": "app", "ch": "TT", "spend": 1283269, "impr": 5320.0, "reach": 2761.0, "video": 1271.0, "eng": 0.0, "click": 2246.0, "install": 552.0, "reg": 12.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-26", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-26", "obj": "reach", "ch": "TT", "spend": 1001974, "impr": 222373.0, "reach": 220952.0, "video": 13337.0, "eng": 0.0, "click": 384.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"date": "2026-04-27", "obj": "app", "ch": "TT", "spend": 2104852, "impr": 8670.0, "reach": 4559.0, "video": 2422.0, "eng": 0.0, "click": 3735.0, "install": 903.0, "reg": 9.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-27", "obj": "reach", "ch": "TT", "spend": 1001441, "impr": 214644.0, "reach": 213025.0, "video": 14137.0, "eng": 0.0, "click": 284.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-04-28", "obj": "app", "ch": "TT", "spend": 1938080, "impr": 9984.0, "reach": 5123.0, "video": 3196.0, "eng": 0.0, "click": 4482.0, "install": 909.0, "reg": 17.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-28", "obj": "eng", "ch": "FB", "spend": 6599577, "impr": 461002.0, "reach": 428738.0, "video": 201948.0, "eng": 140537.0, "click": 4095.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3.0}, {"date": "2026-04-28", "obj": "reach", "ch": "FB", "spend": 3668030, "impr": 541059.0, "reach": 531744.0, "video": 0.0, "eng": 44083.0, "click": 1369.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-04-28", "obj": "reach", "ch": "TT", "spend": 1001019, "impr": 194387.0, "reach": 192512.0, "video": 12248.0, "eng": 0.0, "click": 289.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-04-29", "obj": "app", "ch": "TT", "spend": 2262641, "impr": 13995.0, "reach": 6672.0, "video": 4238.0, "eng": 0.0, "click": 5407.0, "install": 922.0, "reg": 20.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-29", "obj": "eng", "ch": "FB", "spend": 927657, "impr": 103243.0, "reach": 71243.0, "video": 66057.0, "eng": 45167.0, "click": 479.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-29", "obj": "pagefol", "ch": "FB", "spend": 853913, "impr": 10800.0, "reach": 9464.0, "video": 0.0, "eng": 3749.0, "click": 826.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 329.0}, {"date": "2026-04-29", "obj": "pagefol", "ch": "TT", "spend": 581602, "impr": 2329.0, "reach": 2308.0, "video": 493.0, "eng": 0.0, "click": 514.0, "install": 0.0, "reg": 0.0, "follow": 220.0, "pagelike": 0.0}, {"date": "2026-04-29", "obj": "reach", "ch": "FB", "spend": 815308, "impr": 139778.0, "reach": 137104.0, "video": 0.0, "eng": 9121.0, "click": 284.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-04-29", "obj": "reach", "ch": "TT", "spend": 500159, "impr": 104318.0, "reach": 103666.0, "video": 6247.0, "eng": 0.0, "click": 142.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-29", "obj": "view", "ch": "TT", "spend": 600915, "impr": 52836.0, "reach": 52520.0, "video": 23789.0, "eng": 0.0, "click": 632.0, "install": 0.0, "reg": 0.0, "follow": 35.0, "pagelike": 0.0}, {"date": "2026-04-30", "obj": "app", "ch": "TT", "spend": 1916285, "impr": 11096.0, "reach": 5623.0, "video": 3515.0, "eng": 0.0, "click": 4547.0, "install": 806.0, "reg": 23.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-30", "obj": "eng", "ch": "FB", "spend": 563956, "impr": 59944.0, "reach": 40994.0, "video": 42868.0, "eng": 31694.0, "click": 267.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-04-30", "obj": "pagefol", "ch": "TT", "spend": 623786, "impr": 5352.0, "reach": 5289.0, "video": 920.0, "eng": 0.0, "click": 499.0, "install": 0.0, "reg": 0.0, "follow": 241.0, "pagelike": 0.0}, {"date": "2026-04-30", "obj": "reach", "ch": "FB", "spend": 587266, "impr": 103738.0, "reach": 99941.0, "video": 0.0, "eng": 6590.0, "click": 225.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-04-30", "obj": "reach", "ch": "TT", "spend": 501143, "impr": 119767.0, "reach": 119133.0, "video": 5899.0, "eng": 0.0, "click": 191.0, "install": 0.0, "reg": 0.0, "follow": 3.0, "pagelike": 0.0}, {"date": "2026-04-30", "obj": "view", "ch": "TT", "spend": 601859, "impr": 47241.0, "reach": 46195.0, "video": 23344.0, "eng": 0.0, "click": 603.0, "install": 0.0, "reg": 0.0, "follow": 20.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "app", "ch": "TT", "spend": 281261, "impr": 1245.0, "reach": 495.0, "video": 407.0, "eng": 0.0, "click": 367.0, "install": 99.0, "reg": 5.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "eng", "ch": "FB", "spend": 610622, "impr": 81562.0, "reach": 53625.0, "video": 57593.0, "eng": 43048.0, "click": 300.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "pagefol", "ch": "TT", "spend": 192647, "impr": 1112.0, "reach": 1105.0, "video": 236.0, "eng": 0.0, "click": 137.0, "install": 0.0, "reg": 0.0, "follow": 64.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "reach", "ch": "FB", "spend": 617493, "impr": 138871.0, "reach": 135476.0, "video": 0.0, "eng": 9189.0, "click": 266.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "reach", "ch": "TT", "spend": 45405, "impr": 12949.0, "reach": 12907.0, "video": 521.0, "eng": 0.0, "click": 21.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-01", "obj": "view", "ch": "TT", "spend": 58656, "impr": 3213.0, "reach": 3189.0, "video": 1672.0, "eng": 0.0, "click": 41.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 2.0, "eng": 0.0, "click": 0.0, "install": 29.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "eng", "ch": "FB", "spend": 473312, "impr": 61050.0, "reach": 28461.0, "video": 51500.0, "eng": 45013.0, "click": 198.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "pagefol", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "reach", "ch": "FB", "spend": 486507, "impr": 115070.0, "reach": 109798.0, "video": 0.0, "eng": 6722.0, "click": 175.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "reach", "ch": "TT", "spend": 0, "impr": 7.0, "reach": 6.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-02", "obj": "view", "ch": "TT", "spend": 0, "impr": 6.0, "reach": 6.0, "video": 3.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-03", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 17.0, "reg": 1.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-03", "obj": "eng", "ch": "FB", "spend": 598591, "impr": 76764.0, "reach": 39938.0, "video": 62099.0, "eng": 52694.0, "click": 283.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-03", "obj": "reach", "ch": "FB", "spend": 609328, "impr": 140068.0, "reach": 135894.0, "video": 0.0, "eng": 8190.0, "click": 277.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-03", "obj": "reach", "ch": "TT", "spend": 0, "impr": 5.0, "reach": 5.0, "video": 1.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-03", "obj": "view", "ch": "TT", "spend": 0, "impr": 11.0, "reach": 9.0, "video": 4.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "app", "ch": "TT", "spend": 732998, "impr": 3632.0, "reach": 1827.0, "video": 1003.0, "eng": 0.0, "click": 1472.0, "install": 277.0, "reg": 2.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "eng", "ch": "FB", "spend": 577398, "impr": 73569.0, "reach": 43798.0, "video": 56890.0, "eng": 45373.0, "click": 227.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "pagefol", "ch": "TT", "spend": 316775, "impr": 1924.0, "reach": 1908.0, "video": 371.0, "eng": 0.0, "click": 216.0, "install": 0.0, "reg": 0.0, "follow": 104.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "reach", "ch": "FB", "spend": 567965, "impr": 122326.0, "reach": 118797.0, "video": 0.0, "eng": 7140.0, "click": 245.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "reach", "ch": "TT", "spend": 620210, "impr": 116133.0, "reach": 113747.0, "video": 6976.0, "eng": 0.0, "click": 292.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-05-04", "obj": "view", "ch": "TT", "spend": 750000, "impr": 53851.0, "reach": 53431.0, "video": 24755.0, "eng": 0.0, "click": 746.0, "install": 0.0, "reg": 0.0, "follow": 19.0, "pagelike": 0.0}, {"date": "2026-05-05", "obj": "app", "ch": "TT", "spend": 1561420, "impr": 12982.0, "reach": 5501.0, "video": 2872.0, "eng": 0.0, "click": 4585.0, "install": 709.0, "reg": 24.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-05", "obj": "eng", "ch": "FB", "spend": 4922872, "impr": 397002.0, "reach": 371944.0, "video": 48788.0, "eng": 113170.0, "click": 3191.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4.0}, {"date": "2026-05-05", "obj": "pagefol", "ch": "TT", "spend": 709825, "impr": 7745.0, "reach": 7691.0, "video": 1520.0, "eng": 0.0, "click": 351.0, "install": 0.0, "reg": 0.0, "follow": 126.0, "pagelike": 0.0}, {"date": "2026-05-05", "obj": "reach", "ch": "FB", "spend": 3581679, "impr": 626763.0, "reach": 615470.0, "video": 0.0, "eng": 32922.0, "click": 1157.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-05-05", "obj": "reach", "ch": "TT", "spend": 625000, "impr": 125027.0, "reach": 123608.0, "video": 8989.0, "eng": 0.0, "click": 243.0, "install": 0.0, "reg": 0.0, "follow": 4.0, "pagelike": 0.0}, {"date": "2026-05-05", "obj": "view", "ch": "TT", "spend": 1026013, "impr": 59777.0, "reach": 59196.0, "video": 31215.0, "eng": 0.0, "click": 649.0, "install": 0.0, "reg": 0.0, "follow": 22.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "app", "ch": "TT", "spend": 822355, "impr": 5967.0, "reach": 3060.0, "video": 1476.0, "eng": 0.0, "click": 2340.0, "install": 372.0, "reg": 8.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "eng", "ch": "FB", "spend": 334460, "impr": 36762.0, "reach": 27210.0, "video": 25267.0, "eng": 18776.0, "click": 147.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "pagefol", "ch": "TT", "spend": 326557, "impr": 2906.0, "reach": 2882.0, "video": 663.0, "eng": 0.0, "click": 234.0, "install": 0.0, "reg": 0.0, "follow": 97.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "reach", "ch": "FB", "spend": 281642, "impr": 51885.0, "reach": 50957.0, "video": 0.0, "eng": 3053.0, "click": 110.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "reach", "ch": "TT", "spend": 331822, "impr": 74534.0, "reach": 74294.0, "video": 5655.0, "eng": 0.0, "click": 143.0, "install": 0.0, "reg": 0.0, "follow": 2.0, "pagelike": 0.0}, {"date": "2026-05-06", "obj": "view", "ch": "TT", "spend": 346867, "impr": 19549.0, "reach": 19380.0, "video": 10134.0, "eng": 0.0, "click": 213.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"date": "2026-05-07", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 16.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-07", "obj": "pagefol", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-07", "obj": "reach", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-07", "obj": "reach", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-07", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-08", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 12.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-08", "obj": "reach", "ch": "FB", "spend": 185319, "impr": 74398.0, "reach": 71618.0, "video": 0.0, "eng": 5.0, "click": 21.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-08", "obj": "reach", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-08", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-09", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 9.0, "reg": 1.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-09", "obj": "reach", "ch": "FB", "spend": 117655, "impr": 24532.0, "reach": 21449.0, "video": 0.0, "eng": 22.0, "click": 46.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-09", "obj": "reach", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-09", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-10", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 9.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-10", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-10", "obj": "reach", "ch": "FB", "spend": 211108, "impr": 45333.0, "reach": 36541.0, "video": 0.0, "eng": 29.0, "click": 72.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-10", "obj": "reach", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-10", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-11", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 1.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-11", "obj": "reach", "ch": "FB", "spend": 228103, "impr": 71172.0, "reach": 69948.0, "video": 0.0, "eng": 8.0, "click": 21.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-11", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-12", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 1.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-12", "obj": "eng", "ch": "FB", "spend": 3043044, "impr": 187984.0, "reach": 179847.0, "video": 0.0, "eng": 60834.0, "click": 2101.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"date": "2026-05-12", "obj": "reach", "ch": "FB", "spend": 3201778, "impr": 553137.0, "reach": 531932.0, "video": 0.0, "eng": 28948.0, "click": 1047.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-12", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-13", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-13", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-13", "obj": "reach", "ch": "FB", "spend": 184093, "impr": 39489.0, "reach": 32274.0, "video": 0.0, "eng": 28.0, "click": 65.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-14", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-14", "obj": "reach", "ch": "FB", "spend": 178955, "impr": 34995.0, "reach": 29139.0, "video": 0.0, "eng": 33.0, "click": 92.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-15", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-15", "obj": "reach", "ch": "FB", "spend": 184583, "impr": 35429.0, "reach": 28537.0, "video": 0.0, "eng": 40.0, "click": 73.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-15", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-16", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-16", "obj": "reach", "ch": "FB", "spend": 162889, "impr": 31914.0, "reach": 27679.0, "video": 0.0, "eng": 26.0, "click": 59.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-17", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-17", "obj": "reach", "ch": "FB", "spend": 216313, "impr": 42787.0, "reach": 34688.0, "video": 0.0, "eng": 25.0, "click": 79.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-18", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-18", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-18", "obj": "reach", "ch": "FB", "spend": 193507, "impr": 39557.0, "reach": 31933.0, "video": 0.0, "eng": 32.0, "click": 88.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-18", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-19", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-19", "obj": "eng", "ch": "FB", "spend": 3039389, "impr": 272823.0, "reach": 266019.0, "video": 0.0, "eng": 65119.0, "click": 2891.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3.0}, {"date": "2026-05-19", "obj": "reach", "ch": "FB", "spend": 1148335, "impr": 227259.0, "reach": 222930.0, "video": 0.0, "eng": 10230.0, "click": 416.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-05-20", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-21", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-22", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-22", "obj": "reach", "ch": "FB", "spend": 282930, "impr": 53564.0, "reach": 49040.0, "video": 0.0, "eng": 36.0, "click": 100.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-23", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-23", "obj": "reach", "ch": "FB", "spend": 247421, "impr": 48072.0, "reach": 40795.0, "video": 0.0, "eng": 27.0, "click": 74.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-24", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-24", "obj": "reach", "ch": "FB", "spend": 204091, "impr": 40691.0, "reach": 34375.0, "video": 0.0, "eng": 30.0, "click": 75.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-25", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-25", "obj": "reach", "ch": "FB", "spend": 62148, "impr": 12127.0, "reach": 11144.0, "video": 0.0, "eng": 11.0, "click": 26.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-26", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-26", "obj": "eng", "ch": "FB", "spend": 3043044, "impr": 182172.0, "reach": 176478.0, "video": 0.0, "eng": 78818.0, "click": 2281.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 5.0}, {"date": "2026-05-26", "obj": "reach", "ch": "FB", "spend": 3043044, "impr": 553771.0, "reach": 538083.0, "video": 0.0, "eng": 40666.0, "click": 1229.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3.0}, {"date": "2026-05-27", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-27", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-28", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-29", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-30", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-05-31", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-01", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-02", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-02", "obj": "eng", "ch": "FB", "spend": 3043044, "impr": 149204.0, "reach": 144325.0, "video": 0.0, "eng": 63537.0, "click": 1506.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-02", "obj": "reach", "ch": "FB", "spend": 3043044, "impr": 518760.0, "reach": 507461.0, "video": 0.0, "eng": 29787.0, "click": 918.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-03", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-04", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-04", "obj": "eng", "ch": "FB", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-05", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-06", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-07", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-08", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-09", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-09", "obj": "eng", "ch": "FB", "spend": 2430690, "impr": 112645.0, "reach": 111286.0, "video": 0.0, "eng": 60110.0, "click": 1472.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-09", "obj": "reach", "ch": "FB", "spend": 2430696, "impr": 425898.0, "reach": 422644.0, "video": 0.0, "eng": 23043.0, "click": 659.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-10", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-11", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-12", "obj": "app", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-13", "obj": "app", "ch": "TT", "spend": 161249, "impr": 1937.0, "reach": 865.0, "video": 1110.0, "eng": 0.0, "click": 336.0, "install": 2.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-13", "obj": "eng", "ch": "FB", "spend": 1388653, "impr": 77169.0, "reach": 74789.0, "video": 0.0, "eng": 37164.0, "click": 1043.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"date": "2026-06-13", "obj": "pagefol", "ch": "FB", "spend": 426300, "impr": 6338.0, "reach": 5448.0, "video": 0.0, "eng": 1836.0, "click": 543.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 275.0}, {"date": "2026-06-13", "obj": "pagefol", "ch": "TT", "spend": 114768, "impr": 409.0, "reach": 408.0, "video": 99.0, "eng": 0.0, "click": 91.0, "install": 0.0, "reg": 0.0, "follow": 51.0, "pagelike": 0.0}, {"date": "2026-06-13", "obj": "reach", "ch": "FB", "spend": 1349665, "impr": 257065.0, "reach": 245910.0, "video": 0.0, "eng": 3614.0, "click": 449.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"date": "2026-06-13", "obj": "reach", "ch": "TT", "spend": 768100, "impr": 164473.0, "reach": 162850.0, "video": 6757.0, "eng": 0.0, "click": 568.0, "install": 0.0, "reg": 0.0, "follow": 3.0, "pagelike": 0.0}, {"date": "2026-06-13", "obj": "view", "ch": "TT", "spend": 380092, "impr": 20201.0, "reach": 20194.0, "video": 8544.0, "eng": 0.0, "click": 197.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"date": "2026-06-14", "obj": "app", "ch": "TT", "spend": 1000518, "impr": 24985.0, "reach": 18634.0, "video": 5585.0, "eng": 0.0, "click": 2571.0, "install": 49.0, "reg": 15.0, "follow": 4.0, "pagelike": 0.0}, {"date": "2026-06-14", "obj": "eng", "ch": "FB", "spend": 4093157, "impr": 224680.0, "reach": 214037.0, "video": 0.0, "eng": 125265.0, "click": 3564.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4.0}, {"date": "2026-06-14", "obj": "pagefol", "ch": "FB", "spend": 1188175, "impr": 22143.0, "reach": 16352.0, "video": 0.0, "eng": 8419.0, "click": 1905.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 828.0}, {"date": "2026-06-14", "obj": "pagefol", "ch": "TT", "spend": 503668, "impr": 2574.0, "reach": 2553.0, "video": 547.0, "eng": 0.0, "click": 372.0, "install": 0.0, "reg": 0.0, "follow": 202.0, "pagelike": 0.0}, {"date": "2026-06-14", "obj": "reach", "ch": "FB", "spend": 3358769, "impr": 639651.0, "reach": 579729.0, "video": 0.0, "eng": 1491.0, "click": 1092.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-14", "obj": "reach", "ch": "TT", "spend": 1001587, "impr": 244493.0, "reach": 244053.0, "video": 12883.0, "eng": 0.0, "click": 591.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"date": "2026-06-14", "obj": "view", "ch": "TT", "spend": 500914, "impr": 45325.0, "reach": 44684.0, "video": 33676.0, "eng": 0.0, "click": 267.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"date": "2026-06-15", "obj": "app", "ch": "TT", "spend": 1001125, "impr": 31350.0, "reach": 23942.0, "video": 4867.0, "eng": 0.0, "click": 3154.0, "install": 74.0, "reg": 36.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-06-15", "obj": "eng", "ch": "FB", "spend": 2275386, "impr": 135713.0, "reach": 129915.0, "video": 0.0, "eng": 79154.0, "click": 2144.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-15", "obj": "pagefol", "ch": "FB", "spend": 634554, "impr": 12524.0, "reach": 10204.0, "video": 0.0, "eng": 4023.0, "click": 853.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 369.0}, {"date": "2026-06-15", "obj": "pagefol", "ch": "TT", "spend": 501091, "impr": 1250.0, "reach": 1238.0, "video": 268.0, "eng": 0.0, "click": 229.0, "install": 0.0, "reg": 0.0, "follow": 110.0, "pagelike": 0.0}, {"date": "2026-06-15", "obj": "reach", "ch": "FB", "spend": 2908131, "impr": 598611.0, "reach": 571320.0, "video": 0.0, "eng": 710.0, "click": 1029.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-15", "obj": "reach", "ch": "TT", "spend": 1001626, "impr": 223294.0, "reach": 223137.0, "video": 12517.0, "eng": 0.0, "click": 623.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"date": "2026-06-15", "obj": "view", "ch": "TT", "spend": 499466, "impr": 46650.0, "reach": 45842.0, "video": 32096.0, "eng": 0.0, "click": 272.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-16", "obj": "app", "ch": "TT", "spend": 874336, "impr": 42412.0, "reach": 40556.0, "video": 5709.0, "eng": 0.0, "click": 1206.0, "install": 312.0, "reg": 50.0, "follow": 4.0, "pagelike": 0.0}, {"date": "2026-06-16", "obj": "eng", "ch": "FB", "spend": 11826880, "impr": 658453.0, "reach": 639221.0, "video": 0.0, "eng": 292613.0, "click": 7366.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 13.0}, {"date": "2026-06-16", "obj": "pagefol", "ch": "FB", "spend": 953910, "impr": 15369.0, "reach": 12432.0, "video": 0.0, "eng": 5143.0, "click": 1238.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 457.0}, {"date": "2026-06-16", "obj": "pagefol", "ch": "TT", "spend": 502079, "impr": 1461.0, "reach": 1442.0, "video": 284.0, "eng": 0.0, "click": 253.0, "install": 0.0, "reg": 0.0, "follow": 123.0, "pagelike": 0.0}, {"date": "2026-06-16", "obj": "reach", "ch": "FB", "spend": 6710791, "impr": 1238838.0, "reach": 1184830.0, "video": 0.0, "eng": 37065.0, "click": 2046.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"date": "2026-06-16", "obj": "reach", "ch": "TT", "spend": 1000824, "impr": 215501.0, "reach": 214935.0, "video": 13651.0, "eng": 0.0, "click": 590.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"date": "2026-06-16", "obj": "view", "ch": "TT", "spend": 500273, "impr": 42708.0, "reach": 42130.0, "video": 28708.0, "eng": 0.0, "click": 281.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-06-17", "obj": "app", "ch": "TT", "spend": 1173530, "impr": 48949.0, "reach": 47463.0, "video": 6227.0, "eng": 0.0, "click": 1581.0, "install": 628.0, "reg": 68.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-06-17", "obj": "eng", "ch": "FB", "spend": 2912796, "impr": 199866.0, "reach": 187123.0, "video": 0.0, "eng": 98733.0, "click": 2476.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-17", "obj": "pagefol", "ch": "FB", "spend": 1137460, "impr": 19495.0, "reach": 17081.0, "video": 0.0, "eng": 7231.0, "click": 1393.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 541.0}, {"date": "2026-06-17", "obj": "pagefol", "ch": "TT", "spend": 498757, "impr": 1693.0, "reach": 1672.0, "video": 313.0, "eng": 0.0, "click": 277.0, "install": 0.0, "reg": 0.0, "follow": 142.0, "pagelike": 0.0}, {"date": "2026-06-17", "obj": "reach", "ch": "FB", "spend": 2700576, "impr": 592203.0, "reach": 553894.0, "video": 0.0, "eng": 7326.0, "click": 1252.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-17", "obj": "reach", "ch": "TT", "spend": 998655, "impr": 203687.0, "reach": 203418.0, "video": 11835.0, "eng": 0.0, "click": 540.0, "install": 0.0, "reg": 0.0, "follow": 5.0, "pagelike": 0.0}, {"date": "2026-06-17", "obj": "view", "ch": "TT", "spend": 500057, "impr": 43228.0, "reach": 42726.0, "video": 27667.0, "eng": 0.0, "click": 304.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"date": "2026-06-18", "obj": "app", "ch": "TT", "spend": 3152795, "impr": 52891.0, "reach": 48385.0, "video": 8009.0, "eng": 0.0, "click": 4353.0, "install": 1285.0, "reg": 72.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-18", "obj": "eng", "ch": "FB", "spend": 1238583, "impr": 94123.0, "reach": 92125.0, "video": 0.0, "eng": 46259.0, "click": 1026.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-18", "obj": "pagefol", "ch": "FB", "spend": 4372881, "impr": 84665.0, "reach": 62425.0, "video": 0.0, "eng": 33927.0, "click": 4479.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1493.0}, {"date": "2026-06-18", "obj": "pagefol", "ch": "TT", "spend": 2501140, "impr": 17043.0, "reach": 16798.0, "video": 4176.0, "eng": 0.0, "click": 1515.0, "install": 0.0, "reg": 0.0, "follow": 585.0, "pagelike": 0.0}, {"date": "2026-06-18", "obj": "reach", "ch": "FB", "spend": 4718600, "impr": 1004800.0, "reach": 933700.0, "video": 0.0, "eng": 77300.0, "click": 2294.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-18", "obj": "reach", "ch": "TT", "spend": 2005648, "impr": 360696.0, "reach": 358669.0, "video": 21603.0, "eng": 0.0, "click": 1006.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-06-18", "obj": "view", "ch": "TT", "spend": 2014767, "impr": 102679.0, "reach": 101288.0, "video": 48906.0, "eng": 0.0, "click": 1921.0, "install": 0.0, "reg": 0.0, "follow": 24.0, "pagelike": 0.0}, {"date": "2026-06-19", "obj": "app", "ch": "TT", "spend": 3123514, "impr": 114844.0, "reach": 112122.0, "video": 14694.0, "eng": 0.0, "click": 2540.0, "install": 782.0, "reg": 91.0, "follow": 10.0, "pagelike": 0.0}, {"date": "2026-06-19", "obj": "eng", "ch": "FB", "spend": 130152, "impr": 11860.0, "reach": 11564.0, "video": 0.0, "eng": 9090.0, "click": 85.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-19", "obj": "pagefol", "ch": "FB", "spend": 5054378, "impr": 105745.0, "reach": 74917.0, "video": 0.0, "eng": 42779.0, "click": 4928.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1557.0}, {"date": "2026-06-19", "obj": "pagefol", "ch": "TT", "spend": 6502837, "impr": 43812.0, "reach": 42321.0, "video": 10703.0, "eng": 0.0, "click": 3599.0, "install": 0.0, "reg": 0.0, "follow": 1256.0, "pagelike": 0.0}, {"date": "2026-06-19", "obj": "reach", "ch": "FB", "spend": 5746568, "impr": 1199957.0, "reach": 1118587.0, "video": 0.0, "eng": 19769.0, "click": 2271.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-19", "obj": "reach", "ch": "TT", "spend": 6017757, "impr": 936699.0, "reach": 926531.0, "video": 56805.0, "eng": 0.0, "click": 3218.0, "install": 0.0, "reg": 0.0, "follow": 42.0, "pagelike": 0.0}, {"date": "2026-06-19", "obj": "view", "ch": "TT", "spend": 6034234, "impr": 286002.0, "reach": 278894.0, "video": 116415.0, "eng": 0.0, "click": 4073.0, "install": 0.0, "reg": 0.0, "follow": 49.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "app", "ch": "TT", "spend": 6270201, "impr": 294329.0, "reach": 291126.0, "video": 38740.0, "eng": 0.0, "click": 1229.0, "install": 156.0, "reg": 112.0, "follow": 26.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "eng", "ch": "FB", "spend": 170676, "impr": 10831.0, "reach": 10680.0, "video": 0.0, "eng": 8109.0, "click": 140.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "pagefol", "ch": "FB", "spend": 7392532, "impr": 191598.0, "reach": 136169.0, "video": 0.0, "eng": 72827.0, "click": 6907.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1865.0}, {"date": "2026-06-20", "obj": "pagefol", "ch": "TT", "spend": 4567104, "impr": 33961.0, "reach": 33012.0, "video": 8079.0, "eng": 0.0, "click": 2511.0, "install": 0.0, "reg": 0.0, "follow": 903.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "reach", "ch": "FB", "spend": 7370815, "impr": 1681518.0, "reach": 1441568.0, "video": 0.0, "eng": 21134.0, "click": 2885.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "reach", "ch": "TT", "spend": 5982243, "impr": 1082439.0, "reach": 1073899.0, "video": 58877.0, "eng": 0.0, "click": 3429.0, "install": 0.0, "reg": 0.0, "follow": 35.0, "pagelike": 0.0}, {"date": "2026-06-20", "obj": "view", "ch": "TT", "spend": 5267889, "impr": 250709.0, "reach": 245786.0, "video": 104146.0, "eng": 0.0, "click": 2880.0, "install": 0.0, "reg": 0.0, "follow": 53.0, "pagelike": 0.0}, {"date": "2026-06-21", "obj": "app", "ch": "TT", "spend": 7148744, "impr": 355982.0, "reach": 352521.0, "video": 47216.0, "eng": 0.0, "click": 1460.0, "install": 253.0, "reg": 190.0, "follow": 30.0, "pagelike": 0.0}, {"date": "2026-06-21", "obj": "eng", "ch": "FB", "spend": 178236, "impr": 13785.0, "reach": 13522.0, "video": 0.0, "eng": 10434.0, "click": 139.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-21", "obj": "pagefol", "ch": "FB", "spend": 8980615, "impr": 286933.0, "reach": 210086.0, "video": 0.0, "eng": 85299.0, "click": 8019.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1993.0}, {"date": "2026-06-21", "obj": "pagefol", "ch": "TT", "spend": 922370, "impr": 8347.0, "reach": 8199.0, "video": 1912.0, "eng": 0.0, "click": 601.0, "install": 0.0, "reg": 0.0, "follow": 233.0, "pagelike": 0.0}, {"date": "2026-06-21", "obj": "reach", "ch": "FB", "spend": 12479193, "impr": 2676383.0, "reach": 2371223.0, "video": 0.0, "eng": 33725.0, "click": 4088.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4.0}, {"date": "2026-06-21", "obj": "reach", "ch": "TT", "spend": 6815469, "impr": 1402575.0, "reach": 1402193.0, "video": 74911.0, "eng": 0.0, "click": 4280.0, "install": 0.0, "reg": 0.0, "follow": 44.0, "pagelike": 0.0}, {"date": "2026-06-21", "obj": "view", "ch": "TT", "spend": 1082686, "impr": 59946.0, "reach": 59631.0, "video": 33283.0, "eng": 0.0, "click": 463.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "app", "ch": "TT", "spend": 10389693, "impr": 348973.0, "reach": 341769.0, "video": 50020.0, "eng": 0.0, "click": 1678.0, "install": 292.0, "reg": 214.0, "follow": 39.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "eng", "ch": "FB", "spend": 186279, "impr": 15422.0, "reach": 14782.0, "video": 0.0, "eng": 11148.0, "click": 198.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "pagefol", "ch": "FB", "spend": 4406164, "impr": 115332.0, "reach": 85319.0, "video": 0.0, "eng": 38489.0, "click": 4258.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1155.0}, {"date": "2026-06-22", "obj": "pagefol", "ch": "TT", "spend": 2422615, "impr": 22034.0, "reach": 21476.0, "video": 4772.0, "eng": 0.0, "click": 1589.0, "install": 0.0, "reg": 0.0, "follow": 599.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "reach", "ch": "FB", "spend": 3249983, "impr": 758129.0, "reach": 651506.0, "video": 0.0, "eng": 1006.0, "click": 940.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "reach", "ch": "TT", "spend": 6991076, "impr": 1255672.0, "reach": 1246833.0, "video": 72461.0, "eng": 0.0, "click": 3821.0, "install": 0.0, "reg": 0.0, "follow": 35.0, "pagelike": 0.0}, {"date": "2026-06-22", "obj": "view", "ch": "TT", "spend": 2214141, "impr": 135472.0, "reach": 134068.0, "video": 97020.0, "eng": 0.0, "click": 1031.0, "install": 0.0, "reg": 0.0, "follow": 19.0, "pagelike": 0.0}, {"date": "2026-06-23", "obj": "app", "ch": "TT", "spend": 16112474, "impr": 522283.0, "reach": 496520.0, "video": 80924.0, "eng": 0.0, "click": 4903.0, "install": 391.0, "reg": 268.0, "follow": 42.0, "pagelike": 0.0}, {"date": "2026-06-23", "obj": "eng", "ch": "FB", "spend": 271538, "impr": 24040.0, "reach": 24034.0, "video": 0.0, "eng": 17079.0, "click": 278.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-23", "obj": "pagefol", "ch": "FB", "spend": 1643592, "impr": 44166.0, "reach": 37183.0, "video": 0.0, "eng": 16318.0, "click": 1462.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 451.0}, {"date": "2026-06-23", "obj": "pagefol", "ch": "TT", "spend": 941874, "impr": 7609.0, "reach": 7422.0, "video": 1749.0, "eng": 0.0, "click": 591.0, "install": 0.0, "reg": 0.0, "follow": 223.0, "pagelike": 0.0}, {"date": "2026-06-23", "obj": "reach", "ch": "FB", "spend": 3326082, "impr": 741505.0, "reach": 700881.0, "video": 0.0, "eng": 6745.0, "click": 1157.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-23", "obj": "reach", "ch": "TT", "spend": 2492209, "impr": 457945.0, "reach": 457562.0, "video": 28221.0, "eng": 0.0, "click": 1392.0, "install": 0.0, "reg": 0.0, "follow": 26.0, "pagelike": 0.0}, {"date": "2026-06-23", "obj": "view", "ch": "TT", "spend": 983251, "impr": 61376.0, "reach": 60742.0, "video": 45423.0, "eng": 0.0, "click": 473.0, "install": 0.0, "reg": 0.0, "follow": 12.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "app", "ch": "TT", "spend": 24994580, "impr": 847456.0, "reach": 816590.0, "video": 118605.0, "eng": 0.0, "click": 6478.0, "install": 495.0, "reg": 314.0, "follow": 65.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "eng", "ch": "FB", "spend": 239548, "impr": 22399.0, "reach": 21569.0, "video": 0.0, "eng": 16886.0, "click": 196.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "pagefol", "ch": "FB", "spend": 1224761, "impr": 25088.0, "reach": 19557.0, "video": 0.0, "eng": 10891.0, "click": 1372.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 407.0}, {"date": "2026-06-24", "obj": "pagefol", "ch": "TT", "spend": 945699, "impr": 7811.0, "reach": 7715.0, "video": 1624.0, "eng": 0.0, "click": 596.0, "install": 0.0, "reg": 0.0, "follow": 239.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "reach", "ch": "FB", "spend": 1615759, "impr": 335176.0, "reach": 300938.0, "video": 0.0, "eng": 1251.0, "click": 434.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "reach", "ch": "TT", "spend": 1000429, "impr": 183471.0, "reach": 182793.0, "video": 10108.0, "eng": 0.0, "click": 535.0, "install": 0.0, "reg": 0.0, "follow": 3.0, "pagelike": 0.0}, {"date": "2026-06-24", "obj": "view", "ch": "TT", "spend": 501874, "impr": 30250.0, "reach": 30094.0, "video": 20534.0, "eng": 0.0, "click": 223.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "app", "ch": "TT", "spend": 27589363, "impr": 735932.0, "reach": 700476.0, "video": 115032.0, "eng": 0.0, "click": 6760.0, "install": 587.0, "reg": 334.0, "follow": 82.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "eng", "ch": "FB", "spend": 99981, "impr": 9397.0, "reach": 9393.0, "video": 0.0, "eng": 6865.0, "click": 107.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "pagefol", "ch": "FB", "spend": 1147953, "impr": 22942.0, "reach": 18326.0, "video": 0.0, "eng": 12401.0, "click": 1526.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 500.0}, {"date": "2026-06-25", "obj": "pagefol", "ch": "TT", "spend": 944036, "impr": 6114.0, "reach": 5991.0, "video": 1634.0, "eng": 0.0, "click": 799.0, "install": 0.0, "reg": 0.0, "follow": 311.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "reach", "ch": "FB", "spend": 892170, "impr": 217239.0, "reach": 208917.0, "video": 0.0, "eng": 9100.0, "click": 288.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "reach", "ch": "TT", "spend": 1002708, "impr": 168517.0, "reach": 166836.0, "video": 9021.0, "eng": 0.0, "click": 528.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-06-25", "obj": "view", "ch": "TT", "spend": 503102, "impr": 33435.0, "reach": 33142.0, "video": 23538.0, "eng": 0.0, "click": 269.0, "install": 0.0, "reg": 0.0, "follow": 3.0, "pagelike": 0.0}, {"date": "2026-06-26", "obj": "app", "ch": "TT", "spend": 9526359, "impr": 226335.0, "reach": 215838.0, "video": 37344.0, "eng": 0.0, "click": 1995.0, "install": 352.0, "reg": 217.0, "follow": 24.0, "pagelike": 0.0}, {"date": "2026-06-26", "obj": "eng", "ch": "FB", "spend": 221335, "impr": 15458.0, "reach": 14858.0, "video": 0.0, "eng": 11381.0, "click": 216.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-26", "obj": "pagefol", "ch": "FB", "spend": 969326, "impr": 19168.0, "reach": 14981.0, "video": 0.0, "eng": 10398.0, "click": 1262.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 414.0}, {"date": "2026-06-26", "obj": "pagefol", "ch": "TT", "spend": 942275, "impr": 6244.0, "reach": 6106.0, "video": 1997.0, "eng": 0.0, "click": 684.0, "install": 0.0, "reg": 0.0, "follow": 258.0, "pagelike": 0.0}, {"date": "2026-06-26", "obj": "reach", "ch": "FB", "spend": 1049264, "impr": 204880.0, "reach": 199022.0, "video": 0.0, "eng": 4207.0, "click": 421.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-26", "obj": "reach", "ch": "TT", "spend": 1002518, "impr": 167355.0, "reach": 161560.0, "video": 8609.0, "eng": 0.0, "click": 714.0, "install": 0.0, "reg": 0.0, "follow": 12.0, "pagelike": 0.0}, {"date": "2026-06-26", "obj": "view", "ch": "TT", "spend": 500139, "impr": 35934.0, "reach": 35598.0, "video": 24660.0, "eng": 0.0, "click": 279.0, "install": 0.0, "reg": 0.0, "follow": 10.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "app", "ch": "TT", "spend": 9509755, "impr": 237597.0, "reach": 223777.0, "video": 45552.0, "eng": 0.0, "click": 2695.0, "install": 314.0, "reg": 195.0, "follow": 27.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "eng", "ch": "FB", "spend": 245982, "impr": 20449.0, "reach": 19267.0, "video": 0.0, "eng": 15353.0, "click": 217.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "pagefol", "ch": "FB", "spend": 785279, "impr": 13634.0, "reach": 11499.0, "video": 0.0, "eng": 7233.0, "click": 960.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 389.0}, {"date": "2026-06-27", "obj": "pagefol", "ch": "TT", "spend": 924975, "impr": 7257.0, "reach": 7068.0, "video": 3795.0, "eng": 0.0, "click": 1214.0, "install": 0.0, "reg": 0.0, "follow": 448.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "reach", "ch": "FB", "spend": 932525, "impr": 271941.0, "reach": 245525.0, "video": 0.0, "eng": 9327.0, "click": 452.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "reach", "ch": "TT", "spend": 994345, "impr": 188402.0, "reach": 185446.0, "video": 9965.0, "eng": 0.0, "click": 597.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"date": "2026-06-27", "obj": "view", "ch": "TT", "spend": 485182, "impr": 32607.0, "reach": 32236.0, "video": 22749.0, "eng": 0.0, "click": 292.0, "install": 0.0, "reg": 0.0, "follow": 4.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "app", "ch": "TT", "spend": 9537038, "impr": 238003.0, "reach": 224466.0, "video": 44095.0, "eng": 0.0, "click": 2861.0, "install": 359.0, "reg": 200.0, "follow": 19.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "eng", "ch": "FB", "spend": 197165, "impr": 18702.0, "reach": 17892.0, "video": 0.0, "eng": 13860.0, "click": 208.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "pagefol", "ch": "FB", "spend": 1293309, "impr": 22026.0, "reach": 16335.0, "video": 0.0, "eng": 11587.0, "click": 1491.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 687.0}, {"date": "2026-06-28", "obj": "pagefol", "ch": "TT", "spend": 944472, "impr": 7018.0, "reach": 6800.0, "video": 3659.0, "eng": 0.0, "click": 1164.0, "install": 0.0, "reg": 0.0, "follow": 435.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "reach", "ch": "FB", "spend": 1136403, "impr": 244772.0, "reach": 236889.0, "video": 0.0, "eng": 11459.0, "click": 456.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "reach", "ch": "TT", "spend": 1003412, "impr": 222748.0, "reach": 222410.0, "video": 10391.0, "eng": 0.0, "click": 566.0, "install": 0.0, "reg": 0.0, "follow": 10.0, "pagelike": 0.0}, {"date": "2026-06-28", "obj": "view", "ch": "TT", "spend": 500409, "impr": 34379.0, "reach": 33941.0, "video": 23842.0, "eng": 0.0, "click": 303.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"date": "2026-06-29", "obj": "app", "ch": "TT", "spend": 3633880, "impr": 100953.0, "reach": 97615.0, "video": 16499.0, "eng": 0.0, "click": 1067.0, "install": 222.0, "reg": 154.0, "follow": 11.0, "pagelike": 0.0}, {"date": "2026-06-29", "obj": "eng", "ch": "FB", "spend": 1417494, "impr": 81202.0, "reach": 80259.0, "video": 0.0, "eng": 53019.0, "click": 1095.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-06-29", "obj": "pagefol", "ch": "FB", "spend": 6629988, "impr": 225090.0, "reach": 169207.0, "video": 0.0, "eng": 49198.0, "click": 5651.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1535.0}, {"date": "2026-06-29", "obj": "pagefol", "ch": "TT", "spend": 4126300, "impr": 30222.0, "reach": 29566.0, "video": 13634.0, "eng": 0.0, "click": 3743.0, "install": 0.0, "reg": 0.0, "follow": 1255.0, "pagelike": 0.0}, {"date": "2026-06-29", "obj": "reach", "ch": "FB", "spend": 10141387, "impr": 2046470.0, "reach": 1818507.0, "video": 0.0, "eng": 156200.0, "click": 4503.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-29", "obj": "reach", "ch": "TT", "spend": 5798322, "impr": 1161441.0, "reach": 1159313.0, "video": 63384.0, "eng": 0.0, "click": 3222.0, "install": 0.0, "reg": 0.0, "follow": 35.0, "pagelike": 0.0}, {"date": "2026-06-29", "obj": "view", "ch": "TT", "spend": 196168, "impr": 12878.0, "reach": 12802.0, "video": 8719.0, "eng": 0.0, "click": 91.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-06-30", "obj": "app", "ch": "TT", "spend": 8664189, "impr": 305192.0, "reach": 292899.0, "video": 36297.0, "eng": 0.0, "click": 2332.0, "install": 0.0, "reg": 0.0, "follow": 19.0, "pagelike": 0.0}, {"date": "2026-06-30", "obj": "eng", "ch": "FB", "spend": 1468492, "impr": 94930.0, "reach": 86422.0, "video": 0.0, "eng": 60110.0, "click": 1179.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-06-30", "obj": "pagefol", "ch": "FB", "spend": 9785310, "impr": 338651.0, "reach": 249224.0, "video": 0.0, "eng": 63632.0, "click": 7732.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1970.0}, {"date": "2026-06-30", "obj": "pagefol", "ch": "TT", "spend": 1641572, "impr": 11938.0, "reach": 11607.0, "video": 5268.0, "eng": 0.0, "click": 1666.0, "install": 0.0, "reg": 0.0, "follow": 576.0, "pagelike": 0.0}, {"date": "2026-06-30", "obj": "reach", "ch": "FB", "spend": 9939881, "impr": 1940319.0, "reach": 1714823.0, "video": 0.0, "eng": 28163.0, "click": 2728.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"date": "2026-06-30", "obj": "reach", "ch": "TT", "spend": 1803438, "impr": 363039.0, "reach": 362173.0, "video": 19140.0, "eng": 0.0, "click": 1026.0, "install": 0.0, "reg": 0.0, "follow": 14.0, "pagelike": 0.0}, {"date": "2026-06-30", "obj": "view", "ch": "TT", "spend": 0, "impr": 0.0, "reach": 0.0, "video": 0.0, "eng": 0.0, "click": 0.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-07-01", "obj": "app", "ch": "TT", "spend": 2328684, "impr": 128974.0, "reach": 125634.0, "video": 13929.0, "eng": 0.0, "click": 663.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"date": "2026-07-01", "obj": "eng", "ch": "FB", "spend": 757631, "impr": 50999.0, "reach": 49013.0, "video": 0.0, "eng": 29505.0, "click": 611.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-07-01", "obj": "pagefol", "ch": "FB", "spend": 4695800, "impr": 251537.0, "reach": 184671.0, "video": 0.0, "eng": 3528.0, "click": 3928.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 991.0}, {"date": "2026-07-01", "obj": "pagefol", "ch": "TT", "spend": 1496471, "impr": 11126.0, "reach": 10740.0, "video": 2042.0, "eng": 0.0, "click": 1196.0, "install": 0.0, "reg": 0.0, "follow": 397.0, "pagelike": 0.0}, {"date": "2026-07-01", "obj": "reach", "ch": "FB", "spend": 4631505, "impr": 986013.0, "reach": 906100.0, "video": 0.0, "eng": 2140.0, "click": 1185.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"date": "2026-07-01", "obj": "reach", "ch": "TT", "spend": 1803788, "impr": 399585.0, "reach": 398954.0, "video": 22444.0, "eng": 0.0, "click": 1122.0, "install": 0.0, "reg": 0.0, "follow": 11.0, "pagelike": 0.0}, {"date": "2026-07-01", "obj": "view", "ch": "TT", "spend": 421368, "impr": 27742.0, "reach": 27479.0, "video": 17228.0, "eng": 0.0, "click": 216.0, "install": 0.0, "reg": 0.0, "follow": 2.0, "pagelike": 0.0}, {"date": "2026-07-02", "obj": "app", "ch": "TT", "spend": 206657, "impr": 11636.0, "reach": 207.0, "video": 897.0, "eng": 0.0, "click": 64.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"date": "2026-07-02", "obj": "eng", "ch": "FB", "spend": 193847, "impr": 16417.0, "reach": 15829.0, "video": 0.0, "eng": 7733.0, "click": 164.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-07-02", "obj": "pagefol", "ch": "TT", "spend": 232601, "impr": 2174.0, "reach": 685.0, "video": 384.0, "eng": 0.0, "click": 124.0, "install": 0.0, "reg": 0.0, "follow": 40.0, "pagelike": 0.0}, {"date": "2026-07-02", "obj": "reach", "ch": "TT", "spend": 291403, "impr": 65991.0, "reach": 31270.0, "video": 3239.0, "eng": 0.0, "click": 169.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"date": "2026-07-02", "obj": "view", "ch": "TT", "spend": 128922, "impr": 8197.0, "reach": 4070.0, "video": 4588.0, "eng": 0.0, "click": 58.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}], "aud": [{"obj": "app", "ch": "TT", "aud": "Senior", "spend": 56589434, "impr": 1323327.0, "reach": 1222888.0, "video": 265776.0, "eng": 0.0, "click": 29431.0, "install": 4261.0, "reg": 829.0, "follow": 148.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "aud": "Young", "spend": 106819148, "impr": 3643490.0, "reach": 3471449.0, "video": 470393.0, "eng": 0.0, "click": 57165.0, "install": 9323.0, "reg": 1845.0, "follow": 270.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "aud": "Senior", "spend": 47105040, "impr": 3078427.0, "reach": 2890069.0, "video": 537097.0, "eng": 1401380.0, "click": 34790.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 24.0}, {"obj": "eng", "ch": "FB", "aud": "Young", "spend": 27842359, "impr": 1817081.0, "reach": 1625863.0, "video": 324194.0, "eng": 577249.0, "click": 12345.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 27.0}, {"obj": "pagefol", "ch": "FB", "aud": "Senior", "spend": 53159535, "impr": 1559123.0, "reach": 1148318.0, "video": 0.0, "eng": 443635.0, "click": 53030.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 15626.0}, {"obj": "pagefol", "ch": "FB", "aud": "Young", "spend": 12794270, "impr": 306066.0, "reach": 238979.0, "video": 0.0, "eng": 56929.0, "click": 10357.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3722.0}, {"obj": "pagefol", "ch": "TT", "aud": "Senior", "spend": 25561277, "impr": 186028.0, "reach": 180613.0, "video": 57139.0, "eng": 0.0, "click": 18508.0, "install": 0.0, "reg": 0.0, "follow": 6697.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "aud": "Young", "spend": 9366619, "impr": 65437.0, "reach": 63389.0, "video": 14003.0, "eng": 0.0, "click": 6257.0, "install": 0.0, "reg": 0.0, "follow": 2541.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "aud": "Senior", "spend": 84076665, "impr": 16057239.0, "reach": 14572048.0, "video": 0.0, "eng": 622172.0, "click": 31212.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 22.0}, {"obj": "reach", "ch": "FB", "aud": "Young", "spend": 49317633, "impr": 8982481.0, "reach": 8461769.0, "video": 0.0, "eng": 221123.0, "click": 14621.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 16.0}, {"obj": "reach", "ch": "TT", "aud": "Senior", "spend": 28524296, "impr": 5485416.0, "reach": 5433971.0, "video": 374767.0, "eng": 0.0, "click": 15435.0, "install": 0.0, "reg": 0.0, "follow": 225.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "aud": "Young", "spend": 29999304, "impr": 5824726.0, "reach": 5777934.0, "video": 262201.0, "eng": 0.0, "click": 15970.0, "install": 0.0, "reg": 0.0, "follow": 146.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "aud": "Senior", "spend": 22615154, "impr": 1291525.0, "reach": 1270296.0, "video": 713396.0, "eng": 0.0, "click": 14512.0, "install": 0.0, "reg": 0.0, "follow": 268.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "aud": "Young", "spend": 3984090, "impr": 254677.0, "reach": 248977.0, "video": 123262.0, "eng": 0.0, "click": 2265.0, "install": 0.0, "reg": 0.0, "follow": 54.0, "pagelike": 0.0}], "pillar": [{"obj": "app", "ch": "TT", "pillar": "Khác", "spend": 1137997, "impr": 207078.0, "reach": 178535.0, "video": 19958.0, "eng": 0.0, "click": 1028.0, "install": 3.0, "reg": 1.0, "follow": 5.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "pillar": "SPDV/CTKM", "spend": 75097023, "impr": 1900725.0, "reach": 1766556.0, "video": 280739.0, "eng": 0.0, "click": 49531.0, "install": 7596.0, "reg": 879.0, "follow": 121.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "pillar": "Sự kiện", "spend": 87173562, "impr": 2859014.0, "reach": 2749246.0, "video": 435472.0, "eng": 0.0, "click": 36037.0, "install": 5985.0, "reg": 1794.0, "follow": 292.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "pillar": "AWO", "spend": 26502314, "impr": 1994008.0, "reach": 1710531.0, "video": 465168.0, "eng": 1114782.0, "click": 20303.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 12.0}, {"obj": "eng", "ch": "FB", "pillar": "Livestream", "spend": 48445085, "impr": 2901500.0, "reach": 2805401.0, "video": 396123.0, "eng": 863847.0, "click": 26832.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 39.0}, {"obj": "pagefol", "ch": "FB", "pillar": "AWO", "spend": 65953805, "impr": 1865189.0, "reach": 1387297.0, "video": 0.0, "eng": 500564.0, "click": 63387.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 19348.0}, {"obj": "pagefol", "ch": "TT", "pillar": "SPDV/CTKM", "spend": 17874627, "impr": 119368.0, "reach": 115358.0, "video": 37088.0, "eng": 0.0, "click": 13607.0, "install": 0.0, "reg": 0.0, "follow": 5138.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "pillar": "Sự kiện", "spend": 17053269, "impr": 132097.0, "reach": 128644.0, "video": 34054.0, "eng": 0.0, "click": 11158.0, "install": 0.0, "reg": 0.0, "follow": 4100.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "pillar": "AWO", "spend": 91584989, "impr": 19244532.0, "reach": 17414791.0, "video": 0.0, "eng": 465394.0, "click": 33118.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 19.0}, {"obj": "reach", "ch": "FB", "pillar": "Livestream", "spend": 41809309, "impr": 5795188.0, "reach": 5619026.0, "video": 0.0, "eng": 377901.0, "click": 12715.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 19.0}, {"obj": "reach", "ch": "TT", "pillar": "Khác", "spend": 7138852, "impr": 1514709.0, "reach": 1503494.0, "video": 88279.0, "eng": 0.0, "click": 2130.0, "install": 0.0, "reg": 0.0, "follow": 46.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "pillar": "SPDV/CTKM", "spend": 20662930, "impr": 3954903.0, "reach": 3931742.0, "video": 207909.0, "eng": 0.0, "click": 11413.0, "install": 0.0, "reg": 0.0, "follow": 108.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "pillar": "Sự kiện", "spend": 30721818, "impr": 5840530.0, "reach": 5776669.0, "video": 340780.0, "eng": 0.0, "click": 17862.0, "install": 0.0, "reg": 0.0, "follow": 217.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "pillar": "SPDV/CTKM", "spend": 4736861, "impr": 306142.0, "reach": 301210.0, "video": 127661.0, "eng": 0.0, "click": 3505.0, "install": 0.0, "reg": 0.0, "follow": 116.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "pillar": "Sự kiện", "spend": 21862383, "impr": 1240060.0, "reach": 1218063.0, "video": 708997.0, "eng": 0.0, "click": 13272.0, "install": 0.0, "reg": 0.0, "follow": 206.0, "pagelike": 0.0}], "angle": [{"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-Tietkiemonlinevikki", "spend": 7362, "impr": 648.0, "reach": 604.0, "video": 98.0, "eng": 0.0, "click": 9.0, "install": 1.0, "reg": 1.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-cotam", "spend": 520, "impr": 10.0, "reach": 8.0, "video": 0.0, "eng": 0.0, "click": 6.0, "install": 2.0, "reg": 2.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-datvexe", "spend": 4585879, "impr": 302508.0, "reach": 292287.0, "video": 25479.0, "eng": 0.0, "click": 1314.0, "install": 73.0, "reg": 56.0, "follow": 24.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-dunanghoaseno", "spend": 24845608, "impr": 806253.0, "reach": 763631.0, "video": 110440.0, "eng": 0.0, "click": 24550.0, "install": 4603.0, "reg": 279.0, "follow": 35.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-mavikkidi", "spend": 568, "impr": 24.0, "reach": 24.0, "video": 3.0, "eng": 0.0, "click": 2.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-sangolf", "spend": 1835766, "impr": 12922.0, "reach": 6420.0, "video": 3960.0, "eng": 0.0, "click": 5622.0, "install": 839.0, "reg": 13.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-sanvebay0d", "spend": 2224810, "impr": 11177.0, "reach": 5944.0, "video": 3033.0, "eng": 0.0, "click": 4506.0, "install": 955.0, "reg": 32.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-taiapp7", "spend": 10250218, "impr": 332286.0, "reach": 318004.0, "video": 40329.0, "eng": 0.0, "click": 2111.0, "install": 208.0, "reg": 139.0, "follow": 22.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-taiapp9", "spend": 8744736, "impr": 212469.0, "reach": 207569.0, "video": 36755.0, "eng": 0.0, "click": 1431.0, "install": 142.0, "reg": 77.0, "follow": 27.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-trothuvexemphim", "spend": 22503157, "impr": 221552.0, "reach": 171529.0, "video": 60220.0, "eng": 0.0, "click": 9756.0, "install": 741.0, "reg": 280.0, "follow": 13.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "SPDV/CTKM-vivule", "spend": 98399, "impr": 876.0, "reach": 536.0, "video": 422.0, "eng": 0.0, "click": 224.0, "install": 32.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-Tietkiemvikkimoi", "spend": 23860331, "impr": 1072656.0, "reach": 1048526.0, "video": 166457.0, "eng": 0.0, "click": 5161.0, "install": 759.0, "reg": 604.0, "follow": 107.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-mastervideo", "spend": 415751, "impr": 3916.0, "reach": 2180.0, "video": 816.0, "eng": 0.0, "click": 1086.0, "install": 161.0, "reg": 21.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-ngauhung", "spend": 31691, "impr": 2721.0, "reach": 2711.0, "video": 374.0, "eng": 0.0, "click": 18.0, "install": 5.0, "reg": 5.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-rucro", "spend": 1844162, "impr": 7795.0, "reach": 4249.0, "video": 1517.0, "eng": 0.0, "click": 3173.0, "install": 790.0, "reg": 24.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp1", "spend": 180014, "impr": 4741.0, "reach": 1536.0, "video": 371.0, "eng": 0.0, "click": 1213.0, "install": 20.0, "reg": 1.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp2", "spend": 2853892, "impr": 24133.0, "reach": 10731.0, "video": 2760.0, "eng": 0.0, "click": 9043.0, "install": 1890.0, "reg": 18.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp3", "spend": 42225, "impr": 1525.0, "reach": 1138.0, "video": 354.0, "eng": 0.0, "click": 102.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp4", "spend": 31763208, "impr": 791289.0, "reach": 757476.0, "video": 159684.0, "eng": 0.0, "click": 7883.0, "install": 940.0, "reg": 645.0, "follow": 117.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp5", "spend": 7890254, "impr": 336275.0, "reach": 324385.0, "video": 40171.0, "eng": 0.0, "click": 2065.0, "install": 199.0, "reg": 111.0, "follow": 16.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-taiapp6", "spend": 13002782, "impr": 494019.0, "reach": 484388.0, "video": 46297.0, "eng": 0.0, "click": 2263.0, "install": 380.0, "reg": 276.0, "follow": 35.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-teasinglive77", "spend": 10156, "impr": 106.0, "reach": 96.0, "video": 24.0, "eng": 0.0, "click": 45.0, "install": 19.0, "reg": 2.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-tietkiemvikki", "spend": 382777, "impr": 3154.0, "reach": 1920.0, "video": 522.0, "eng": 0.0, "click": 954.0, "install": 224.0, "reg": 3.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-tietkiemvikki2", "spend": 886345, "impr": 5202.0, "reach": 3674.0, "video": 1096.0, "eng": 0.0, "click": 1955.0, "install": 472.0, "reg": 3.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-tietkiemvikki3", "spend": 3869809, "impr": 106935.0, "reach": 104972.0, "video": 14452.0, "eng": 0.0, "click": 512.0, "install": 93.0, "reg": 69.0, "follow": 17.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-vikkichitrung", "spend": 138482, "impr": 4491.0, "reach": 1245.0, "video": 569.0, "eng": 0.0, "click": 551.0, "install": 30.0, "reg": 10.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "Sự kiện-vikkichitrung2", "spend": 1683, "impr": 56.0, "reach": 19.0, "video": 8.0, "eng": 0.0, "click": 13.0, "install": 3.0, "reg": 2.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "dunanghoaseno", "spend": 48148, "impr": 8000.0, "reach": 7591.0, "video": 895.0, "eng": 0.0, "click": 60.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "mastervideo", "spend": 326602, "impr": 85570.0, "reach": 68776.0, "video": 5161.0, "eng": 0.0, "click": 258.0, "install": 0.0, "reg": 0.0, "follow": 2.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "sanvebay0d", "spend": 197084, "impr": 36762.0, "reach": 30901.0, "video": 3395.0, "eng": 0.0, "click": 182.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "tietkiemvikki", "spend": 292864, "impr": 44084.0, "reach": 41974.0, "video": 5906.0, "eng": 0.0, "click": 308.0, "install": 2.0, "reg": 1.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "app", "ch": "TT", "angle": "vivule", "spend": 273299, "impr": 32662.0, "reach": 29293.0, "video": 4601.0, "eng": 0.0, "click": 220.0, "install": 1.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "NGỰA VÀNG KÝ MÙA 3", "spend": 50786718, "impr": 3153695.0, "reach": 2988396.0, "video": 559154.0, "eng": 977849.0, "click": 28068.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 39.0}, {"obj": "eng", "ch": "FB", "angle": "POST09", "spend": 3212081, "impr": 403632.0, "reach": 250073.0, "video": 302137.0, "eng": 240107.0, "click": 1463.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST10", "spend": 294819, "impr": 13260.0, "reach": 12839.0, "video": 0.0, "eng": 7514.0, "click": 478.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "eng", "ch": "FB", "angle": "POST12", "spend": 568, "impr": 77.0, "reach": 71.0, "video": 0.0, "eng": 17.0, "click": 16.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST13", "spend": 557, "impr": 63.0, "reach": 57.0, "video": 0.0, "eng": 20.0, "click": 23.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST15", "spend": 5492126, "impr": 329755.0, "reach": 312473.0, "video": 0.0, "eng": 207002.0, "click": 4868.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4.0}, {"obj": "eng", "ch": "FB", "angle": "POST16", "spend": 467, "impr": 51.0, "reach": 45.0, "video": 0.0, "eng": 9.0, "click": 14.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST19", "spend": 2535702, "impr": 148755.0, "reach": 142063.0, "video": 0.0, "eng": 88035.0, "click": 2089.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"obj": "eng", "ch": "FB", "angle": "POST20", "spend": 173, "impr": 36.0, "reach": 30.0, "video": 0.0, "eng": 11.0, "click": 11.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST23", "spend": 2232, "impr": 244.0, "reach": 207.0, "video": 0.0, "eng": 55.0, "click": 75.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST24", "spend": 6485, "impr": 404.0, "reach": 362.0, "video": 0.0, "eng": 35.0, "click": 54.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST25", "spend": 122548, "impr": 4063.0, "reach": 3932.0, "video": 0.0, "eng": 2306.0, "click": 70.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST26", "spend": 9140013, "impr": 579245.0, "reach": 553228.0, "video": 0.0, "eng": 267134.0, "click": 6987.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4.0}, {"obj": "eng", "ch": "FB", "angle": "POST27", "spend": 431, "impr": 43.0, "reach": 35.0, "video": 0.0, "eng": 7.0, "click": 8.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST28", "spend": 1188, "impr": 118.0, "reach": 110.0, "video": 0.0, "eng": 40.0, "click": 41.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST30", "spend": 472, "impr": 69.0, "reach": 58.0, "video": 0.0, "eng": 12.0, "click": 15.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST34", "spend": 1096, "impr": 181.0, "reach": 155.0, "video": 0.0, "eng": 21.0, "click": 36.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST35", "spend": 3205623, "impr": 252995.0, "reach": 243185.0, "video": 0.0, "eng": 183406.0, "click": 2583.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "eng", "ch": "FB", "angle": "POST36", "spend": 139694, "impr": 8653.0, "reach": 8454.0, "video": 0.0, "eng": 5033.0, "click": 217.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "eng", "ch": "FB", "angle": "POST37", "spend": 4406, "impr": 169.0, "reach": 159.0, "video": 0.0, "eng": 16.0, "click": 19.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST09", "spend": 954175, "impr": 17540.0, "reach": 14732.0, "video": 0.0, "eng": 4579.0, "click": 1204.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 381.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST16", "spend": 4008451, "impr": 205499.0, "reach": 156073.0, "video": 0.0, "eng": 783.0, "click": 2768.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 879.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST30", "spend": 2890594, "impr": 148187.0, "reach": 120033.0, "video": 0.0, "eng": 559.0, "click": 2160.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 715.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST33", "spend": 12939192, "impr": 262544.0, "reach": 209268.0, "video": 0.0, "eng": 86634.0, "click": 13372.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 4482.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST35", "spend": 19664390, "impr": 506256.0, "reach": 348261.0, "video": 0.0, "eng": 229446.0, "click": 19670.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 5454.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST38", "spend": 2642314, "impr": 57682.0, "reach": 46898.0, "video": 0.0, "eng": 28726.0, "click": 3005.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 863.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST39", "spend": 493719, "impr": 11876.0, "reach": 9726.0, "video": 0.0, "eng": 6210.0, "click": 451.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 109.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST40", "spend": 1454984, "impr": 62034.0, "reach": 49450.0, "video": 0.0, "eng": 256.0, "click": 868.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 276.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST41", "spend": 1715982, "impr": 34830.0, "reach": 27694.0, "video": 0.0, "eng": 19965.0, "click": 2296.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 740.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST42", "spend": 5719721, "impr": 119225.0, "reach": 91924.0, "video": 0.0, "eng": 58123.0, "click": 5725.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1940.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST43", "spend": 5580475, "impr": 283199.0, "reach": 202849.0, "video": 0.0, "eng": 1041.0, "click": 4489.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1141.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST44", "spend": 2864505, "impr": 68788.0, "reach": 46725.0, "video": 0.0, "eng": 31767.0, "click": 2551.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 543.0}, {"obj": "pagefol", "ch": "FB", "angle": "POST45", "spend": 1793785, "impr": 44784.0, "reach": 27783.0, "video": 0.0, "eng": 17070.0, "click": 1348.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 354.0}, {"obj": "pagefol", "ch": "FB", "angle": "VIKKI CHUYỆN TẤM KỂ TRÚNG VÀNG", "spend": 3231518, "impr": 42745.0, "reach": 35881.0, "video": 0.0, "eng": 15405.0, "click": 3480.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1471.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM", "spend": 550718, "impr": 4808.0, "reach": 4772.0, "video": 882.0, "eng": 0.0, "click": 368.0, "install": 0.0, "reg": 0.0, "follow": 171.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-Tietkiemonlinevikki", "spend": 1686969, "impr": 12822.0, "reach": 12642.0, "video": 3830.0, "eng": 0.0, "click": 1324.0, "install": 0.0, "reg": 0.0, "follow": 496.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-cotam", "spend": 5617751, "impr": 31393.0, "reach": 30554.0, "video": 7625.0, "eng": 0.0, "click": 3451.0, "install": 0.0, "reg": 0.0, "follow": 1366.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-dunanghoaseno", "spend": 403322, "impr": 6929.0, "reach": 6824.0, "video": 870.0, "eng": 0.0, "click": 200.0, "install": 0.0, "reg": 0.0, "follow": 60.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-taiapp7", "spend": 2899295, "impr": 13621.0, "reach": 12939.0, "video": 2309.0, "eng": 0.0, "click": 1543.0, "install": 0.0, "reg": 0.0, "follow": 685.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-taiapp8", "spend": 75507, "impr": 667.0, "reach": 665.0, "video": 147.0, "eng": 0.0, "click": 75.0, "install": 0.0, "reg": 0.0, "follow": 22.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-taiapp9", "spend": 5068786, "impr": 37884.0, "reach": 36786.0, "video": 19470.0, "eng": 0.0, "click": 5528.0, "install": 0.0, "reg": 0.0, "follow": 1955.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "SPDV/CTKM-trothuvexemphim", "spend": 1572279, "impr": 11244.0, "reach": 10176.0, "video": 1955.0, "eng": 0.0, "click": 1118.0, "install": 0.0, "reg": 0.0, "follow": 383.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện", "spend": 2200474, "impr": 16560.0, "reach": 16411.0, "video": 3321.0, "eng": 0.0, "click": 1583.0, "install": 0.0, "reg": 0.0, "follow": 681.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-mastervideo", "spend": 7448818, "impr": 60135.0, "reach": 58218.0, "video": 14881.0, "eng": 0.0, "click": 4500.0, "install": 0.0, "reg": 0.0, "follow": 1627.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-megalive77teasing ", "spend": 2071377, "impr": 7651.0, "reach": 7266.0, "video": 2305.0, "eng": 0.0, "click": 1176.0, "install": 0.0, "reg": 0.0, "follow": 430.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-rucro", "spend": 1650168, "impr": 16618.0, "reach": 16138.0, "video": 3815.0, "eng": 0.0, "click": 1058.0, "install": 0.0, "reg": 0.0, "follow": 343.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-tietkiemvikki", "spend": 64268, "impr": 437.0, "reach": 433.0, "video": 76.0, "eng": 0.0, "click": 30.0, "install": 0.0, "reg": 0.0, "follow": 10.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-tietkiemvikki3", "spend": 2095400, "impr": 14151.0, "reach": 13839.0, "video": 5843.0, "eng": 0.0, "click": 1997.0, "install": 0.0, "reg": 0.0, "follow": 689.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-tietkiemvikki4", "spend": 29887, "impr": 239.0, "reach": 238.0, "video": 47.0, "eng": 0.0, "click": 20.0, "install": 0.0, "reg": 0.0, "follow": 9.0, "pagelike": 0.0}, {"obj": "pagefol", "ch": "TT", "angle": "Sự kiện-vikkichitrung", "spend": 1492877, "impr": 16306.0, "reach": 16101.0, "video": 3766.0, "eng": 0.0, "click": 794.0, "install": 0.0, "reg": 0.0, "follow": 311.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "MINIGAME", "spend": 2397192, "impr": 450422.0, "reach": 375180.0, "video": 0.0, "eng": 544.0, "click": 814.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "NGỰA VÀNG KÝ MÙA 3", "spend": 44074684, "impr": 6176758.0, "reach": 5991944.0, "video": 0.0, "eng": 402882.0, "click": 13627.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 21.0}, {"obj": "reach", "ch": "FB", "angle": "POST09", "spend": 3529953, "impr": 748912.0, "reach": 725991.0, "video": 0.0, "eng": 45559.0, "click": 1477.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST10", "spend": 1211813, "impr": 263972.0, "reach": 253232.0, "video": 0.0, "eng": 133.0, "click": 272.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST11", "spend": 1574566, "impr": 310139.0, "reach": 284896.0, "video": 0.0, "eng": 39811.0, "click": 971.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST12", "spend": 4766710, "impr": 975096.0, "reach": 917103.0, "video": 0.0, "eng": 1088.0, "click": 1818.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST13", "spend": 1131549, "impr": 238596.0, "reach": 231662.0, "video": 0.0, "eng": 245.0, "click": 340.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST14", "spend": 243994, "impr": 47227.0, "reach": 45884.0, "video": 0.0, "eng": 3496.0, "click": 177.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST15", "spend": 255027, "impr": 48654.0, "reach": 47558.0, "video": 0.0, "eng": 5444.0, "click": 148.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST16", "spend": 3850030, "impr": 840455.0, "reach": 776012.0, "video": 0.0, "eng": 797.0, "click": 1254.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST17", "spend": 1389308, "impr": 261225.0, "reach": 246002.0, "video": 0.0, "eng": 31628.0, "click": 667.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST18", "spend": 721649, "impr": 146015.0, "reach": 137986.0, "video": 0.0, "eng": 9484.0, "click": 266.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST19", "spend": 154700, "impr": 28369.0, "reach": 27756.0, "video": 0.0, "eng": 1829.0, "click": 79.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST20", "spend": 1646993, "impr": 351841.0, "reach": 334639.0, "video": 0.0, "eng": 274.0, "click": 430.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST21", "spend": 320373, "impr": 61695.0, "reach": 59864.0, "video": 0.0, "eng": 5759.0, "click": 203.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"obj": "reach", "ch": "FB", "angle": "POST22", "spend": 41573, "impr": 8202.0, "reach": 7932.0, "video": 0.0, "eng": 612.0, "click": 23.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST23", "spend": 5817773, "impr": 1330277.0, "reach": 1233407.0, "video": 0.0, "eng": 1369.0, "click": 1753.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST24", "spend": 3265017, "impr": 711599.0, "reach": 661814.0, "video": 0.0, "eng": 888.0, "click": 1167.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST25", "spend": 386977, "impr": 72926.0, "reach": 71662.0, "video": 0.0, "eng": 3214.0, "click": 113.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST26", "spend": 24535, "impr": 4698.0, "reach": 4545.0, "video": 0.0, "eng": 355.0, "click": 17.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST27", "spend": 769349, "impr": 171293.0, "reach": 165365.0, "video": 0.0, "eng": 203.0, "click": 288.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST28", "spend": 3523654, "impr": 718401.0, "reach": 687394.0, "video": 0.0, "eng": 915.0, "click": 1147.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 2.0}, {"obj": "reach", "ch": "FB", "angle": "POST29", "spend": 1639338, "impr": 320863.0, "reach": 302968.0, "video": 0.0, "eng": 24946.0, "click": 1064.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST30", "spend": 18811191, "impr": 4199534.0, "reach": 3655932.0, "video": 0.0, "eng": 4458.0, "click": 6572.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 3.0}, {"obj": "reach", "ch": "FB", "angle": "POST31", "spend": 109548, "impr": 21305.0, "reach": 20331.0, "video": 0.0, "eng": 1101.0, "click": 67.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST32", "spend": 3368637, "impr": 699425.0, "reach": 668625.0, "video": 0.0, "eng": 677.0, "click": 1064.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST33", "spend": 978906, "impr": 199494.0, "reach": 192238.0, "video": 0.0, "eng": 27645.0, "click": 705.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST34", "spend": 1458516, "impr": 276770.0, "reach": 253445.0, "video": 0.0, "eng": 251.0, "click": 413.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST35", "spend": 2474504, "impr": 487435.0, "reach": 447031.0, "video": 0.0, "eng": 75435.0, "click": 1385.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST36", "spend": 31497, "impr": 6252.0, "reach": 6152.0, "video": 0.0, "eng": 376.0, "click": 20.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST37", "spend": 6158830, "impr": 1327502.0, "reach": 1132700.0, "video": 0.0, "eng": 969.0, "click": 1674.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST38", "spend": 4621060, "impr": 899412.0, "reach": 777207.0, "video": 0.0, "eng": 127691.0, "click": 2586.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST39", "spend": 26696, "impr": 5181.0, "reach": 5041.0, "video": 0.0, "eng": 819.0, "click": 24.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST40", "spend": 1744735, "impr": 400907.0, "reach": 360445.0, "video": 0.0, "eng": 159.0, "click": 325.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST41", "spend": 356045, "impr": 65597.0, "reach": 63550.0, "video": 0.0, "eng": 10423.0, "click": 219.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST42", "spend": 67846, "impr": 12586.0, "reach": 12137.0, "video": 0.0, "eng": 2292.0, "click": 54.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST43", "spend": 7163782, "impr": 1437596.0, "reach": 1220159.0, "video": 0.0, "eng": 739.0, "click": 1437.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 1.0}, {"obj": "reach", "ch": "FB", "angle": "POST44", "spend": 118010, "impr": 21070.0, "reach": 20437.0, "video": 0.0, "eng": 3477.0, "click": 74.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "POST45", "spend": 80783, "impr": 15601.0, "reach": 14575.0, "video": 0.0, "eng": 1800.0, "click": 34.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "THÔNG BÁO LIVESTREAM 21/4", "spend": 194057, "impr": 31145.0, "reach": 29514.0, "video": 0.0, "eng": 3126.0, "click": 109.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "FB", "angle": "VIKKITRICHUNG", "spend": 2892898, "impr": 645273.0, "reach": 563502.0, "video": 0.0, "eng": 382.0, "click": 956.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM", "spend": 740717, "impr": 155143.0, "reach": 153481.0, "video": 9237.0, "eng": 0.0, "click": 381.0, "install": 0.0, "reg": 0.0, "follow": 2.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-Tietkiemonlinevikki", "spend": 463581, "impr": 84886.0, "reach": 83769.0, "video": 7456.0, "eng": 0.0, "click": 203.0, "install": 0.0, "reg": 0.0, "follow": 2.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-cotam", "spend": 612588, "impr": 113985.0, "reach": 111461.0, "video": 5587.0, "eng": 0.0, "click": 387.0, "install": 0.0, "reg": 0.0, "follow": 7.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-dunanghoaseno", "spend": 4285594, "impr": 813585.0, "reach": 809094.0, "video": 44032.0, "eng": 0.0, "click": 2375.0, "install": 0.0, "reg": 0.0, "follow": 14.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-mavikkidi", "spend": 3698452, "impr": 729524.0, "reach": 726502.0, "video": 41113.0, "eng": 0.0, "click": 2061.0, "install": 0.0, "reg": 0.0, "follow": 34.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-taiapp7", "spend": 6752927, "impr": 1271370.0, "reach": 1263730.0, "video": 66901.0, "eng": 0.0, "click": 3745.0, "install": 0.0, "reg": 0.0, "follow": 35.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "SPDV/CTKM-trothuvexemphim", "spend": 4109071, "impr": 786410.0, "reach": 783705.0, "video": 33583.0, "eng": 0.0, "click": 2261.0, "install": 0.0, "reg": 0.0, "follow": 14.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện", "spend": 868474, "impr": 172267.0, "reach": 170095.0, "video": 12630.0, "eng": 0.0, "click": 357.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-mastervideo", "spend": 2990277, "impr": 573631.0, "reach": 571319.0, "video": 29550.0, "eng": 0.0, "click": 1721.0, "install": 0.0, "reg": 0.0, "follow": 29.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-megalive77teasing ", "spend": 84168, "impr": 10728.0, "reach": 10440.0, "video": 606.0, "eng": 0.0, "click": 29.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-ngauhung", "spend": 2626441, "impr": 501872.0, "reach": 491934.0, "video": 27602.0, "eng": 0.0, "click": 1461.0, "install": 0.0, "reg": 0.0, "follow": 12.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-rucro", "spend": 3930107, "impr": 765011.0, "reach": 751891.0, "video": 37749.0, "eng": 0.0, "click": 2074.0, "install": 0.0, "reg": 0.0, "follow": 37.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp1", "spend": 1998029, "impr": 360390.0, "reach": 357271.0, "video": 24450.0, "eng": 0.0, "click": 1344.0, "install": 0.0, "reg": 0.0, "follow": 18.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp2", "spend": 2303993, "impr": 445641.0, "reach": 436762.0, "video": 32105.0, "eng": 0.0, "click": 1335.0, "install": 0.0, "reg": 0.0, "follow": 14.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp3", "spend": 965385, "impr": 182673.0, "reach": 179267.0, "video": 13738.0, "eng": 0.0, "click": 632.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp4", "spend": 1961712, "impr": 360328.0, "reach": 356711.0, "video": 26520.0, "eng": 0.0, "click": 1192.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp5", "spend": 2554974, "impr": 474584.0, "reach": 472856.0, "video": 29019.0, "eng": 0.0, "click": 1669.0, "install": 0.0, "reg": 0.0, "follow": 19.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-taiapp6", "spend": 1853051, "impr": 343136.0, "reach": 339745.0, "video": 14805.0, "eng": 0.0, "click": 1016.0, "install": 0.0, "reg": 0.0, "follow": 12.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-teasinglive77", "spend": 1644518, "impr": 321597.0, "reach": 315358.0, "video": 15105.0, "eng": 0.0, "click": 899.0, "install": 0.0, "reg": 0.0, "follow": 13.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-tietkiemde", "spend": 917239, "impr": 170076.0, "reach": 168975.0, "video": 9176.0, "eng": 0.0, "click": 541.0, "install": 0.0, "reg": 0.0, "follow": 8.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-tietkiemvikki2", "spend": 3155935, "impr": 616048.0, "reach": 614443.0, "video": 23589.0, "eng": 0.0, "click": 1837.0, "install": 0.0, "reg": 0.0, "follow": 20.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-vikkichitrung", "spend": 2774328, "impr": 530653.0, "reach": 528002.0, "video": 42967.0, "eng": 0.0, "click": 1714.0, "install": 0.0, "reg": 0.0, "follow": 22.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "Sự kiện-vikkichitrung2", "spend": 93187, "impr": 11895.0, "reach": 11600.0, "video": 1169.0, "eng": 0.0, "click": 41.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "dunanghoaseno", "spend": 3675746, "impr": 787626.0, "reach": 781475.0, "video": 46216.0, "eng": 0.0, "click": 1073.0, "install": 0.0, "reg": 0.0, "follow": 18.0, "pagelike": 0.0}, {"obj": "reach", "ch": "TT", "angle": "mastervideo", "spend": 3463106, "impr": 727083.0, "reach": 722019.0, "video": 42063.0, "eng": 0.0, "click": 1057.0, "install": 0.0, "reg": 0.0, "follow": 28.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "SPDV/CTKM", "spend": 2564474, "impr": 201457.0, "reach": 199183.0, "video": 97230.0, "eng": 0.0, "click": 2495.0, "install": 0.0, "reg": 0.0, "follow": 94.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "SPDV/CTKM-cotam", "spend": 54400, "impr": 4008.0, "reach": 3940.0, "video": 2182.0, "eng": 0.0, "click": 84.0, "install": 0.0, "reg": 0.0, "follow": 6.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "SPDV/CTKM-dunanghoaseno", "spend": 2030116, "impr": 93850.0, "reach": 91276.0, "video": 26111.0, "eng": 0.0, "click": 844.0, "install": 0.0, "reg": 0.0, "follow": 12.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "SPDV/CTKM-mavikkidi", "spend": 41598, "impr": 3356.0, "reach": 3351.0, "video": 1028.0, "eng": 0.0, "click": 47.0, "install": 0.0, "reg": 0.0, "follow": 3.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "SPDV/CTKM-trothuvexemphim", "spend": 46273, "impr": 3471.0, "reach": 3460.0, "video": 1110.0, "eng": 0.0, "click": 35.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện", "spend": 819836, "impr": 35027.0, "reach": 34743.0, "video": 17686.0, "eng": 0.0, "click": 389.0, "install": 0.0, "reg": 0.0, "follow": 11.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-mastervideo", "spend": 2420226, "impr": 101464.0, "reach": 100287.0, "video": 32212.0, "eng": 0.0, "click": 2837.0, "install": 0.0, "reg": 0.0, "follow": 49.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-ngauhung", "spend": 6312, "impr": 226.0, "reach": 217.0, "video": 152.0, "eng": 0.0, "click": 16.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-taiapp1", "spend": 20518, "impr": 1066.0, "reach": 1059.0, "video": 534.0, "eng": 0.0, "click": 21.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-taiapp2", "spend": 201300, "impr": 7787.0, "reach": 7427.0, "video": 5868.0, "eng": 0.0, "click": 101.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-taiapp3", "spend": 5077243, "impr": 397884.0, "reach": 390045.0, "video": 254843.0, "eng": 0.0, "click": 2643.0, "install": 0.0, "reg": 0.0, "follow": 41.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-taiapp4", "spend": 3883, "impr": 190.0, "reach": 189.0, "video": 93.0, "eng": 0.0, "click": 9.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-taiapp5", "spend": 29253, "impr": 1357.0, "reach": 1347.0, "video": 709.0, "eng": 0.0, "click": 22.0, "install": 0.0, "reg": 0.0, "follow": 1.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-teasinglive77", "spend": 17448, "impr": 1299.0, "reach": 1298.0, "video": 398.0, "eng": 0.0, "click": 9.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-tietkiemde", "spend": 24965, "impr": 1279.0, "reach": 1267.0, "video": 940.0, "eng": 0.0, "click": 18.0, "install": 0.0, "reg": 0.0, "follow": 0.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-tietkiemvikki2", "spend": 57519, "impr": 3734.0, "reach": 3724.0, "video": 1079.0, "eng": 0.0, "click": 26.0, "install": 0.0, "reg": 0.0, "follow": 4.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-vikkichitrung", "spend": 9343894, "impr": 457444.0, "reach": 447562.0, "video": 213546.0, "eng": 0.0, "click": 5321.0, "install": 0.0, "reg": 0.0, "follow": 63.0, "pagelike": 0.0}, {"obj": "view", "ch": "TT", "angle": "Sự kiện-vikkichitrung2", "spend": 3839986, "impr": 231303.0, "reach": 228898.0, "video": 180937.0, "eng": 0.0, "click": 1860.0, "install": 0.0, "reg": 0.0, "follow": 37.0, "pagelike": 0.0}], "date_min": "2026-04-14", "date_max": "2026-07-02", "today": "2026-07-02", "camp_start": "2026-04-13", "camp_end": "2026-07-31"};
+/* ▼▼▼ DÁN LINK WEB APP CỦA CHỊ VÀO GIỮA 2 DẤU NHÁY ▼▼▼ */
+const APPS_SCRIPT_URL = "PASTE_APPS_SCRIPT_URL_HERE";
+/* ▲▲▲ ví dụ: "https://script.google.com/macros/s/XXXXX/exec" ▲▲▲ */
+async function loadData(){
+  if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf("http")!==0) return DATA;  // chưa dán link → dùng số có sẵn
+  try{ const r = await fetch(APPS_SCRIPT_URL); if(!r.ok) throw 0; return await r.json(); }
+  catch(e){ console.warn("Không lấy được số live, tạm dùng số có sẵn:", e); return DATA; }  // lỗi mạng → không vỡ trang
+}
+
+/* plan-side rates/freq targets from media plan (period-independent) */
+const PLAN_META = {
+  reach:  {freq:2.31, ctr:0.00138, vr:0.0132},
+  eng:    {freq:1.48, er:0.262, vr:0.220, ctr:0.0081},
+  view:   {freq:2.12, vr:0.145, ctr:0.0062},
+  pagefol:{},
+  app:    {freq:3.98, cr:0.152, vr:0.160, ctr:0.123}
+};
+const OBJ_DEF = {
+  reach:  {label:'Reach', ic:'📣', color:'#6D28D9', primary:'impr', unit:'CPM', note:'Phủ chương trình tới càng nhiều người càng tốt (Facebook + TikTok) — ưu tiên #1 của khách.'},
+  eng:    {label:'Engagement', ic:'💬', color:'#E11D74', primary:'eng', unit:'CPE', note:'Kéo tương tác nội dung Facebook (đã tách phần Pagelike sang mục tiêu riêng).'},
+  view:   {label:'View', ic:'🎬', color:'#0F9D6B', primary:'video', unit:'CPV', note:'Lượt xem video TikTok (đã tách phần Follower sang mục tiêu riêng).'},
+  pagefol:{label:'Pagelike / Follower', ic:'👍', color:'#8B5CF6', primary:'pagefol', unit:'CPFL', note:'Tăng Like fanpage (FB) + Follow (TikTok). Ngân sách kế hoạch nằm trong line Engagement + View.'},
+  app:    {label:'App Install', ic:'📲', color:'#F59E0B', primary:'install', unit:'CPI', note:'Tải app + đăng ký tài khoản (TikTok Android/iOS). App Install dừng 30/6.'}
+};
+const OBJ_ORDER = ['reach','eng','view','pagefol','app'];
+const CH_DEF = {FB:{label:'Facebook',color:'#6D28D9'}, TT:{label:'TikTok',color:'#E11D74'}};
+
+/* ---------- formatters (vi-VN) ---------- */
+const f0 = n => Math.round(n||0).toLocaleString('vi-VN');
+const fVND = n => Math.round(n||0).toLocaleString('vi-VN')+' đ';
+const fTr = n => (n/1e6).toLocaleString('vi-VN',{maximumFractionDigits:(Math.abs(n)<1e8?1:0)})+' tr';
+const fPct = (n,d=1) => (n*100).toLocaleString('vi-VN',{maximumFractionDigits:d})+'%';
+const fPctv = (n,d=1) => (n).toLocaleString('vi-VN',{maximumFractionDigits:d})+'%';
+const MET = ['spend','impr','reach','video','eng','click','install','reg','follow','pagelike'];
+
+/* ---------- date presets (mirror DB TOTAL) ---------- */
+function toDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function iso(dt){return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');}
+function addDays(dt,n){const x=new Date(dt);x.setDate(x.getDate()+n);return x;}
+let RANGES={}, STATE={key:'all', from:null, to:null};
+function buildRanges(D){
+  const today=toDate(D.today), cs=toDate(D.camp_start), ce=toDate(D.camp_end);
+  const mFirst=new Date(today.getFullYear(),today.getMonth(),1);
+  const mLast=new Date(today.getFullYear(),today.getMonth()+1,0);
+  const lmFirst=new Date(today.getFullYear(),today.getMonth()-1,1);
+  const lmLast=new Date(today.getFullYear(),today.getMonth(),0);
+  const dow=(today.getDay()+6)%7; // Mon=0
+  const wMon=addDays(today,-dow), wSun=addDays(wMon,6);
+  const lwMon=addDays(wMon,-7), lwSun=addDays(wMon,-1);
+  RANGES={
+    all:['Toàn chiến dịch',cs,ce],
+    ctd:['CTD',cs,today],
+    mtd:['MTD',mFirst,today],
+    ytd:['YTD',new Date(today.getFullYear(),0,1),today],
+    tm:['Tháng này',mFirst,mLast],
+    lm:['Tháng trước',lmFirst,lmLast],
+    tw:['Tuần này',wMon,wSun],
+    lw:['Tuần trước',lwMon,lwSun],
+    l3:['L3D',addDays(today,-3),today],
+    l7:['L7D',addDays(today,-7),today],
+    l14:['L14D',addDays(today,-14),today],
+    today:['Hôm nay',today,today]
+  };
+}
+const PRESETS=[['all','Toàn chiến dịch'],['ctd','CTD'],['mtd','MTD'],['ytd','YTD'],['tm','Tháng này'],['lm','Tháng trước'],['tw','Tuần này'],['lw','Tuần trước'],['l3','L3D'],['l7','L7D'],['l14','L14D'],['today','Hôm nay'],['custom','Tùy chọn']];
+function activeRange(){
+  if(STATE.key==='custom' && STATE.from && STATE.to) return [STATE.from, STATE.to];
+  const r=RANGES[STATE.key]||RANGES.all; return [r[1],r[2]];
+}
+
+/* ---------- aggregation ---------- */
+let D;
+function sumRows(rows){const o={};MET.forEach(m=>o[m]=0);rows.forEach(r=>MET.forEach(m=>o[m]+=(+r[m]||0)));return o;}
+function dailyIn(){
+  const [a,b]=activeRange();const A=iso(a),B=iso(b);
+  return D.daily.filter(r=>r.date>=A && r.date<=B);
+}
+function byObj(rows){const g={};OBJ_ORDER.forEach(o=>g[o]=[]);rows.forEach(r=>{if(g[r.obj])g[r.obj].push(r)});const out={};OBJ_ORDER.forEach(o=>out[o]=sumRows(g[o]));return out;}
+function byCh(rows){const g={FB:[],TT:[]};rows.forEach(r=>{if(g[r.ch])g[r.ch].push(r)});return {FB:sumRows(g.FB),TT:sumRows(g.TT)};}
+/* unit costs & rates */
+function costOf(o,s){switch(OBJ_DEF[o].unit){
+  case'CPM':return s.impr? s.spend/s.impr*1000:0;
+  case'CPE':return s.eng? s.spend/s.eng:0;
+  case'CPV':return s.video? s.spend/s.video:0;
+  case'CPI':return s.install? s.spend/s.install:0;
+  case'CPFL':{const q=s.follow+s.pagelike;return q? s.spend/q:0;}
+}}
+function primaryVal(o,s){const p=OBJ_DEF[o].primary;return p==='pagefol'?(s.follow+s.pagelike):s[p];}
+function planCost(o){const P=D.plan.obj[o];return P.CPM||P.CPE||P.CPV||P.CPI||(P.CPFL)||(o==='pagefol'? D.plan.obj.pagefol.budget/D.plan.obj.pagefol.qty:0);}
+
+/* ============================ RENDER ============================ */
+function render(){
+  const rows=dailyIn();
+  const o=byObj(rows), c=byCh(rows), tot=sumRows(rows);
+  renderRangeNote();
+  renderHero(tot);
+  renderSN1(tot,o); renderKPIs(tot,o); renderPace(tot); renderMix(o); renderObjTable(o);
+  renderSN2(o); renderOtabs(o); renderObjDetail(CUROBJ, o);
+  renderChannel(c);
+  renderChObj(rows);
+}
+function renderRangeNote(){
+  const [a,b]=activeRange();
+  document.getElementById('rangeNote').innerHTML='Khoảng dữ liệu: <b>'+iso(a)+'</b> → <b>'+iso(b)+'</b> · dữ liệu thực tế đến '+D.date_max;
+}
+function renderHero(tot){
+  const plan=D.plan.total_media, pace=tot.spend/plan;
+  document.getElementById('heroSub').innerHTML=
+    'Chiến dịch chạy <b>13/4 → 31/7/2026</b>. Tính đến <b>'+D.date_max+'</b>, đã tiêu <b>'+fTr(tot.spend)+' đ</b> / kế hoạch '+fTr(plan)+' đ (<b>'+fPct(pace)+'</b>). App Install đã dừng 30/6; social & livestream còn chạy tới 21–31/7.';
+}
+
+/* client-interest coverage (poolsize) — uses PLAN dedup reach vs pool */
+function coverage(){
+  const pf=D.pool.plan_reach, fbPool=D.pool.FB.Senior+D.pool.FB.Young, ttPool=D.pool.TT.Senior+D.pool.TT.Young;
+  return {fb:pf.FB/fbPool, tt:pf.TT/ttPool, comb:(pf.FB+pf.TT)/(fbPool+ttPool), fbR:pf.FB, ttR:pf.TT, pool:fbPool+ttPool};
+}
+function renderSN1(tot,o){
+  const cov=coverage(), plan=D.plan.total_media, pace=tot.spend/plan;
+  const reg=o.app.reg, regPlan=D.plan.obj.app.reg;
+  document.getElementById('sn1').innerHTML=`
+  <div class="box sum"><h4>📌 Tóm tắt</h4><ul>
+    <li>Đã giải ngân <b>${fTr(tot.spend)} đ</b> (${fPct(pace)} kế hoạch) — chiến dịch vẫn đang chạy, pacing hợp lý.</li>
+    <li><b>Độ phủ kế hoạch ~${fPct(cov.comb,0)}</b> tổng pool (~${fTr(cov.pool)}); Facebook phủ đậm hơn (${fPct(cov.fb,0)}) so với TikTok (${fPct(cov.tt,0)}).</li>
+    <li><b>Đăng ký app ${f0(reg)}</b> lượt — <span class="chip good">${(reg/regPlan).toLocaleString('vi-VN',{maximumFractionDigits:1})}× kế hoạch</span> cả chiến dịch (${f0(regPlan)}).</li>
+  </ul></div>
+  <div class="box next"><h4>🎯 Next actions</h4><ul>
+    <li>Dồn ngân sách còn lại vào tuyến đang rẻ (Engagement/View) để đẩy độ phủ & follow trước 21/7.</li>
+    <li>Mở rộng tệp <b>Senior TikTok</b> (mới phủ ~14%) — còn nhiều dư địa.</li>
+    <li>Giữ nhịp đăng ký app: nhân bản angle "tải app" đang cho CPI tốt.</li>
+  </ul></div>`;
+}
+function renderKPIs(tot,o){
+  const cov=coverage(), plan=D.plan.total_media, pace=tot.spend/plan;
+  const reg=o.app.reg, regPlan=D.plan.obj.app.reg, inst=o.app.install;
+  const pl=o.pagefol.pagelike+o.pagefol.follow;
+  const cards=[
+    {cls:'hl',lab:'💰 Ngân sách đã tiêu',val:fTr(tot.spend)+' đ',sub:`KH ${fTr(plan)} đ · <span class="up">${fPct(pace)}</span>`},
+    {cls:'hl2',lab:'📣 Độ phủ / poolsize',val:fPct(cov.comb,0),sub:`~${fTr(cov.fbR+cov.ttR)} người / pool ~${fTr(cov.pool)}`},
+    {cls:'hl',lab:'✍️ Đăng ký app (WCA)',val:f0(reg),sub:`KH ${f0(regPlan)} · <span class="up">${(reg/regPlan).toLocaleString('vi-VN',{maximumFractionDigits:1})}×</span>`},
+    {cls:'',lab:'📲 Lượt tải app',val:f0(inst),sub:'Appsflyer · TikTok'},
+    {cls:'',lab:'👁 Impressions',val:f0(tot.impr),sub:'Tổng lượt hiển thị'},
+    {cls:'',lab:'💬 Engagement',val:f0(tot.eng),sub:'Tương tác (Facebook)'},
+    {cls:'',lab:'🎬 Video views',val:f0(tot.video),sub:'Lượt xem 2s+'},
+    {cls:'',lab:'👍 Like + Follow',val:f0(pl),sub:`FB like ${f0(o.pagefol.pagelike)} + TT follow ${f0(o.pagefol.follow)}`}
+  ];
+  document.getElementById('kpiGrid').innerHTML=cards.map(k=>`<div class="kpi ${k.cls}">
+    <div class="lab">${k.lab}</div><div class="val num">${k.val}</div><div class="sub num">${k.sub}</div></div>`).join('');
+}
+function renderPace(tot){
+  const plan=D.plan.total_media, pace=tot.spend/plan;
+  document.getElementById('paceSub').innerHTML=`Thực chi <b>${fTr(tot.spend)} đ</b> / kế hoạch toàn chiến dịch ${fTr(plan)} đ`;
+  document.getElementById('paceWrap').innerHTML=`
+    <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:30px;letter-spacing:-1px;color:var(--gold-deep)">${fPct(pace)}</div>
+    <div class="pace"><i style="width:${Math.min(100,pace*100)}%"></i></div>
+    <div class="pace-lab"><span>Đã tiêu ${fTr(tot.spend)}</span><span>Còn ${fTr(Math.max(0,plan-tot.spend))}</span></div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:8px">Ngày còn lại tới 31/7 vẫn đang phân phối — pacing sẽ tiến về 100%.</div>`;
+}
+let CH={};
+function mkChart(id,cfg){if(CH[id])CH[id].destroy();CH[id]=new Chart(document.getElementById(id),cfg);}
+function renderMix(o){
+  const labels=OBJ_ORDER.map(k=>OBJ_DEF[k].label), vals=OBJ_ORDER.map(k=>o[k].spend), cols=OBJ_ORDER.map(k=>OBJ_DEF[k].color);
+  mkChart('chMix',{type:'doughnut',data:{labels,datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#fff'}]},
+    options:{plugins:{legend:{position:'right',labels:{boxWidth:11,font:{size:11},padding:8}},
+      tooltip:{callbacks:{label:c=>c.label+': '+fTr(c.raw)+' đ ('+fPctv(c.raw/vals.reduce((a,b)=>a+b,0)*100,0)+')'}}},cutout:'58%'}});
+}
+function renderObjTable(o){
+  let rows='';const totA=OBJ_ORDER.reduce((s,k)=>s+o[k].spend,0);
+  OBJ_ORDER.forEach(k=>{
+    const P=D.plan.obj[k], planB=P.budget, act=o[k].spend, pace=planB?act/planB:0;
+    const pc=costOf(k,o[k]), plc=planCost(k), better=pc<plc, delta=plc?((pc-plc)/plc*100):0;
+    rows+=`<tr>
+      <td><span class="tag-obj"><span class="dot" style="background:${OBJ_DEF[k].color}"></span>${OBJ_DEF[k].label}</span></td>
+      <td class="num">${fTr(planB)}</td>
+      <td class="num">${fTr(act)}</td>
+      <td class="num">${fPct(pace)}</td>
+      <td class="num">${OBJ_DEF[k].unit} ${f0(plc)}</td>
+      <td class="num">${f0(pc)}</td>
+      <td class="num"><span class="chip ${better?'good':'warn'}">${better?'▼':'▲'} ${Math.abs(delta).toFixed(0)}%</span></td></tr>`;
+  });
+  const planTot=D.plan.total_media;
+  document.getElementById('objTable').innerHTML=`
+    <thead><tr><th>Mục tiêu</th><th>NS kế hoạch</th><th>Thực chi</th><th>Pacing</th><th>Đơn giá KH</th><th>Đơn giá TT</th><th>vs KH</th></tr></thead>
+    <tbody>${rows}<tr class="total"><td>TỔNG</td><td class="num">${fTr(planTot)}</td><td class="num">${fTr(totA)}</td><td class="num">${fPct(totA/planTot)}</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr></tbody>`;
+}
+
+/* ---- section 2 ---- */
+function renderSN2(o){
+  // find best & worst efficiency vs plan
+  let best=null,worst=null;
+  OBJ_ORDER.forEach(k=>{const pc=costOf(k,o[k]),plc=planCost(k);if(!pc||!plc)return;const r=pc/plc;
+    if(!best||r<best.r)best={k,r};if(!worst||r>worst.r)worst={k,r};});
+  document.getElementById('sn2').innerHTML=`
+  <div class="box sum"><h4>📌 Tóm tắt</h4><ul>
+    <li>Cả 5 mục tiêu đều <b>rẻ hơn kế hoạch</b> về đơn giá — hiệu quả phân phối tốt.</li>
+    <li>Tối ưu nhất: <b>${OBJ_DEF[best.k].label}</b> (đơn giá chỉ ${fPct(best.r,0)} so với KH).</li>
+    <li>App Install: <b>CPI ${f0(costOf('app',o.app))} đ</b> so với KH ${f0(D.plan.obj.app.CPI)} đ; đăng ký vượt xa kế hoạch.</li>
+  </ul></div>
+  <div class="box next"><h4>🎯 Next actions</h4><ul>
+    <li>Chuyển bớt ngân sách sang mục tiêu đơn giá tốt nhất để tối đa sản lượng.</li>
+    <li>Với ${OBJ_DEF[worst.k].label} (đơn giá cao nhất tương đối) — soát creative & tệp để kéo giá xuống.</li>
+    <li>Bổ sung reach dedup ở account-level để chốt tần suất thực.</li>
+  </ul></div>`;
+}
+let CUROBJ='reach';
+function renderOtabs(o){
+  document.getElementById('otabs').innerHTML=OBJ_ORDER.map(k=>{
+    const P=D.plan.obj[k],act=o[k].spend,pace=P.budget?act/P.budget:0;
+    return `<button class="otab ${k===CUROBJ?'on':''}" data-o="${k}">
+      <div class="n"><span class="dot" style="background:${OBJ_DEF[k].color}"></span>${OBJ_DEF[k].ic} ${OBJ_DEF[k].label}</div>
+      <div class="b">${fTr(act)}</div><div class="p">${fPct(pace)} kế hoạch</div></button>`;}).join('');
+  document.querySelectorAll('.otab').forEach(b=>b.onclick=()=>{CUROBJ=b.dataset.o;renderOtabs(o);renderObjDetail(CUROBJ,o);});
+}
+function metricCard(k,label,plan,act,note){
+  return `<div class="m"><div class="k">${label}</div><div class="pa">
+    ${plan!==null?`<span class="plan">KH ${plan}</span>`:''}<span class="act num">${act}</span></div>
+    ${note?`<div class="note">${note}</div>`:''}</div>`;
+}
+function renderObjDetail(k,o){
+  const s=o[k], P=D.plan.obj[k], M=PLAN_META[k], def=OBJ_DEF[k];
+  const pc=costOf(k,s), plc=planCost(k), better=pc<plc, delta=plc?((pc-plc)/plc*100):0;
+  const pace=P.budget?s.spend/P.budget:0;
+  const ctr=s.impr?s.click/s.impr:0, vr=s.impr?s.video/s.impr:0, er=s.impr?s.eng/s.impr:0;
+  let cards='';
+  cards+=metricCard(k,def.unit+' (đơn giá)', f0(plc)+' đ', f0(pc)+' đ', better?`rẻ hơn KH ${Math.abs(delta).toFixed(0)}%`:`cao hơn KH ${delta.toFixed(0)}%`);
+  // primary quantity
+  const pv=primaryVal(k,s);
+  const qlab={reach:'Impressions',eng:'Engagement',view:'Video views',pagefol:'Like + Follow',app:'Lượt tải (AF)'}[k];
+  cards+=metricCard(k,qlab,null,f0(pv),'sản lượng thực tế');
+  if(k==='reach'){
+    cards+=metricCard(k,'CTR',fPct(M.ctr,2),fPct(ctr,2));
+    cards+=metricCard(k,'CPC',null,f0(s.click?s.spend/s.click:0)+' đ');
+    cards+=metricCard(k,'Frequency',M.freq.toLocaleString('vi-VN')+' (KH)','account-level','đo ở account, không cộng dồn được từ data ngày');
+    cards+=metricCard(k,'CPM Facebook',f0(8400)+' đ',f0(cpmChannel('FB'))+' đ');
+    cards+=metricCard(k,'CPM TikTok',f0(14700)+' đ',f0(cpmChannel('TT'))+' đ');
+  }else if(k==='eng'){
+    cards+=metricCard(k,'ER (eng/impr)',fPct(M.er,1),fPct(er,1));
+    cards+=metricCard(k,'VR',fPct(M.vr,1),fPct(vr,1));
+    cards+=metricCard(k,'CTR',fPct(M.ctr,2),fPct(ctr,2));
+    cards+=metricCard(k,'Freq',M.freq.toLocaleString('vi-VN')+' (KH)','account-level');
+  }else if(k==='view'){
+    cards+=metricCard(k,'VR (view/impr)',fPct(M.vr,1),fPct(vr,1));
+    cards+=metricCard(k,'CTR',fPct(M.ctr,2),fPct(ctr,2));
+    cards+=metricCard(k,'CPC',null,f0(s.click?s.spend/s.click:0)+' đ');
+    cards+=metricCard(k,'Freq',M.freq.toLocaleString('vi-VN')+' (KH)','account-level');
+  }else if(k==='pagefol'){
+    cards+=metricCard(k,'FB Pagelike',null,f0(s.pagelike));
+    cards+=metricCard(k,'TT Follow',null,f0(s.follow));
+    cards+=metricCard(k,'CTR',null,fPct(ctr,2));
+  }else if(k==='app'){
+    cards+=metricCard(k,'Đăng ký (WCA)',f0(P.reg),f0(s.reg),`<span style="color:var(--good);font-weight:700">${(s.reg/P.reg).toLocaleString('vi-VN',{maximumFractionDigits:1})}× kế hoạch</span>`);
+    cards+=metricCard(k,'CR (install/click)',fPct(M.cr,1),fPct(s.click?s.install/s.click:0,1));
+    cards+=metricCard(k,'CTR',fPct(M.ctr,1),fPct(ctr,1));
+    cards+=metricCard(k,'CPC',null,f0(s.click?s.spend/s.click:0)+' đ');
+  }
+  document.getElementById('objDetail').innerHTML=`
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:flex-start">
+      <div><div class="panel-t" style="font-size:16px">${def.ic} ${def.label}</div>
+        <div class="panel-s" style="max-width:520px">${def.note}</div></div>
+      <div style="text-align:right"><div style="font-size:11px;color:var(--muted)">Thực chi / Kế hoạch</div>
+        <div style="font-family:'Plus Jakarta Sans';font-weight:800;font-size:18px">${fTr(s.spend)} <span style="color:var(--muted);font-weight:600;font-size:13px">/ ${fTr(P.budget)}</span></div>
+        <span class="chip ${pace>=0.6?'neu':'warn'}">${fPct(pace)} kế hoạch</span></div>
+    </div>
+    <div class="pace" style="margin:12px 0 4px"><i style="width:${Math.min(100,pace*100)}%"></i></div>
+    <div class="metric-grid">${cards}</div>`;
+}
+function cpmChannel(ch){const rows=dailyIn().filter(r=>r.obj==='reach'&&r.ch===ch);const s=sumRows(rows);return s.impr?s.spend/s.impr*1000:0;}
+
+/* ---- section 3 : content pillar + angle (full campaign) ---- */
+function renderContent(){
+  // pillar per objective (bars = actual unit cost)
+  const groups={}; // obj -> {pillar: agg}
+  D.pillar.forEach(r=>{(groups[r.obj]=groups[r.obj]||{});const key=r.ch+' · '+r.pillar;
+    groups[r.obj][key]=r;});
+  // Build a grouped view for the main objectives
+  const showObj=['reach','eng','view','app'];
+  const pillarSets=[];
+  const bars=[]; const labels=[]; const colors=[];
+  // We'll chart: for each obj, its pillars' actual unit cost (normalized within obj later). Simpler: table-like bar per pillar.
+  const rowsAll=D.pillar.filter(r=>r.spend>0).map(r=>{
+    const uc=costOf(r.obj,r);
+    return {obj:r.obj,ch:r.ch,pillar:r.pillar,spend:r.spend,uc,unit:OBJ_DEF[r.obj].unit,pv:primaryVal(r.obj,r)};
+  }).filter(r=>['reach','eng','view','app','pagefol'].includes(r.obj));
+  // chart: within-objective efficiency index (100 = objective average unit cost; lower = better)
+  const objAgg={};
+  D.pillar.forEach(r=>{objAgg[r.obj]=objAgg[r.obj]||Object.fromEntries(MET.map(m=>[m,0]));MET.forEach(m=>objAgg[r.obj][m]+=(+r[m]||0));});
+  const chLabels=[], chData=[], chCol=[], chRaw=[];
+  showObj.forEach(ob=>{
+    const blended=costOf(ob,objAgg[ob])||1;
+    D.pillar.filter(r=>r.obj===ob && r.pillar!=='Khác' && r.spend>800000).forEach(r=>{
+      const uc=costOf(ob,r); if(!uc)return;
+      chLabels.push(OBJ_DEF[ob].label+' · '+r.ch+' '+r.pillar);
+      chData.push(Math.round(uc/blended*100)); chCol.push(OBJ_DEF[ob].color); chRaw.push(uc);
+    });
+  });
+  mkChart('chPillar',{type:'bar',data:{labels:chLabels,datasets:[{data:chData,backgroundColor:chCol,borderRadius:5}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'Chỉ số '+c.raw+' · đơn giá '+f0(chRaw[c.dataIndex])+' đ'}}},
+      scales:{x:{suggestedMin:0,suggestedMax:130,ticks:{font:{size:10}},grid:{color:'#F1EEF9'},title:{display:true,text:'100 = TB mục tiêu · thấp hơn = hiệu quả hơn',font:{size:9.5}}},y:{ticks:{font:{size:10}}}}}});
+  document.getElementById('pillarLeg').innerHTML=showObj.map(k=>`<span><span class="dot" style="background:${OBJ_DEF[k].color}"></span>${OBJ_DEF[k].label}</span>`).join('');
+
+  // angle table: top angles by objective's unit cost (min spend threshold)
+  const ang=D.angle.filter(r=>r.spend>1500000 && r.pillar!=='' ).map(r=>({
+    obj:r.obj,ch:r.ch,angle:r.angle,spend:r.spend,uc:costOf(r.obj,r),unit:OBJ_DEF[r.obj].unit,pv:primaryVal(r.obj,r)
+  })).filter(r=>r.uc>0);
+  // rank: within each obj, cheapest unit cost first; take top overall meaningful
+  ang.sort((a,b)=>{if(a.obj!==b.obj)return OBJ_ORDER.indexOf(a.obj)-OBJ_ORDER.indexOf(b.obj);return a.uc-b.uc;});
+  const top=[]; const perObj={};
+  ang.forEach(r=>{perObj[r.obj]=(perObj[r.obj]||0);if(perObj[r.obj]<3){top.push(r);perObj[r.obj]++;}});
+  const clean=a=>a.replace('SPDV/CTKM-','').replace('Sự kiện-','').replace('SPDV/CTKM','SPDV/CTKM (chung)').replace('Sự kiện','Sự kiện (chung)');
+  document.getElementById('angleTable').innerHTML=`
+    <thead><tr><th>Angle</th><th>Mục tiêu</th><th>Kênh</th><th>Chi tiêu</th><th>Đơn giá</th></tr></thead>
+    <tbody>${top.map(r=>`<tr>
+      <td>${clean(r.angle)}</td>
+      <td><span class="tag-obj"><span class="dot" style="background:${OBJ_DEF[r.obj].color}"></span>${OBJ_DEF[r.obj].label}</span></td>
+      <td style="text-align:left">${r.ch}</td>
+      <td class="num">${fTr(r.spend)}</td>
+      <td class="num">${OBJ_DEF[r.obj].unit} ${f0(r.uc)}</td></tr>`).join('')}</tbody>`;
+
+  // summary
+  // best pillar for view & app
+  const viewP=rowsAll.filter(r=>r.obj==='view'&&r.pillar!=='Khác').sort((a,b)=>a.uc-b.uc)[0];
+  const appP=rowsAll.filter(r=>r.obj==='app'&&r.pillar!=='Khác').sort((a,b)=>a.uc-b.uc)[0];
+  document.getElementById('sn3').innerHTML=`
+  <div class="box sum"><h4>📌 Tóm tắt</h4><ul>
+    <li>Facebook: <b>Livestream</b> là tuyến kéo tương tác mạnh nhất; AWO gánh reach nền.</li>
+    <li>TikTok View rẻ nhất ở tuyến <b>${viewP?viewP.pillar:'Sự kiện'}</b>; App Install tốt nhất ở tuyến <b>${appP?appP.pillar:'SPDV/CTKM'}</b>.</li>
+    <li>Nhóm angle "tải app" (taiapp*) và "sự kiện" đang cho đơn giá tốt nhất.</li>
+  </ul></div>
+  <div class="box next"><h4>🎯 Next actions</h4><ul>
+    <li>Nhân bản các angle top-đầu bảng cho giai đoạn còn lại.</li>
+    <li>Cắt các angle chi tiêu cao mà đơn giá kém để dồn về tuyến hiệu quả.</li>
+    <li>Giữ lịch Livestream đều để duy trì đỉnh tương tác hàng tuần.</li>
+  </ul></div>`;
+}
+
+/* ---- section 4 : channel ---- */
+function renderChannel(c){
+  const roles={FB:'Nhận diện + Tương tác + Pagelike (reach & engagement)',TT:'Video + Follower + toàn bộ App Install'};
+  const html=['FB','TT'].map(ch=>{
+    const s=c[ch], cpm=s.impr?s.spend/s.impr*1000:0;
+    const stats=[
+      ['Thực chi', fTr(s.spend)+' đ'],
+      ['Impressions', f0(s.impr)],
+      ['CPM', f0(cpm)+' đ'],
+      ['Click (CTR)', f0(s.click)+' ('+fPct(s.impr?s.click/s.impr:0,2)+')'],
+      ch==='FB'?['Engagement', f0(s.eng)]:['Video views', f0(s.video)],
+      ch==='FB'?['Pagelike', f0(s.pagelike)]:['Follow', f0(s.follow)],
+    ];
+    if(ch==='TT')stats.push(['Tải app / Đăng ký', f0(s.install)+' / '+f0(s.reg)]);
+    return `<div class="chcard ${ch.toLowerCase()}"><div class="in">
+      <div class="hd"><div class="ic">${ch==='FB'?'f':'♪'}</div><b>${CH_DEF[ch].label}</b></div>
+      <div class="role">${roles[ch]}</div>
+      ${stats.map(x=>`<div class="chstat"><span>${x[0]}</span><span class="v num">${x[1]}</span></div>`).join('')}
+    </div></div>`;
+  }).join('');
+  document.getElementById('chSplit').innerHTML=html;
+  // SN4
+  const fb=c.FB,tt=c.TT,total=fb.spend+tt.spend;
+  document.getElementById('sn4').innerHTML=`
+  <div class="box sum"><h4>📌 Tóm tắt</h4><ul>
+    <li><b>TikTok ${fPct(tt.spend/total,0)}</b> / <b>Facebook ${fPct(fb.spend/total,0)}</b> tổng chi — TikTok gánh App Install nên chiếm phần lớn.</li>
+    <li>Facebook cho <b>reach & engagement</b> khối lượng lớn; TikTok mạnh <b>video + follow + install</b>.</li>
+    <li>CPM hai kênh đều tốt (FB ${f0(fb.impr?fb.spend/fb.impr*1000:0)} đ · TT ${f0(tt.impr?tt.spend/tt.impr*1000:0)} đ).</li>
+  </ul></div>
+  <div class="box next"><h4>🎯 Next actions</h4><ul>
+    <li>Facebook: tăng tần suất trên tệp Senior đang phủ tốt.</li>
+    <li>TikTok: mở rộng tệp Young cho reach, giữ Android cho App Install giá tốt.</li>
+    <li>Đồng bộ angle thắng giữa 2 kênh để tái sử dụng creative.</li>
+  </ul></div>`;
+}
+function renderChObj(rows){
+  const objs=OBJ_ORDER;
+  const dsFB=objs.map(o=>{const s=sumRows(rows.filter(r=>r.ch==='FB'&&r.obj===o));return Math.round(s.spend);});
+  const dsTT=objs.map(o=>{const s=sumRows(rows.filter(r=>r.ch==='TT'&&r.obj===o));return Math.round(s.spend);});
+  mkChart('chChObj',{type:'bar',data:{labels:['Facebook','TikTok'],datasets:objs.map((o,i)=>({
+    label:OBJ_DEF[o].label,data:[dsFB[i],dsTT[i]],backgroundColor:OBJ_DEF[o].color,borderRadius:4}))},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.dataset.label+': '+fTr(c.raw)+' đ'}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,ticks:{callback:v=>fTr(v),font:{size:10}},grid:{color:'#F1EEF9'}}}}});
+  document.getElementById('chObjLeg').innerHTML=objs.map(k=>`<span><span class="dot" style="background:${OBJ_DEF[k].color}"></span>${OBJ_DEF[k].label}</span>`).join('');
+}
+
+/* ---- section 5 : audience (full campaign) ---- */
+function renderAudience(){
+  const cov=coverage();
+  const pool=D.pool;
+  // per channel senior/young coverage using plan_reach split? We only have channel-level plan reach.
+  // Approximate audience reach share by spend share within channel reach objective.
+  function audBars(ch){
+    const senPool=pool[ch].Senior, yngPool=pool[ch].Young;
+    // planned reach for channel:
+    const planR=pool.plan_reach[ch];
+    // split planned reach by senior/young spend share in reach objective
+    const rr=D.aud.filter(a=>a.ch===ch && a.obj==='reach');
+    const sSpend=(rr.find(a=>a.aud==='Senior')||{spend:0}).spend, ySpend=(rr.find(a=>a.aud==='Young')||{spend:0}).spend;
+    const tot=sSpend+ySpend||1;
+    const senR=planR*sSpend/tot, yngR=planR*ySpend/tot;
+    const rows=[['Senior 36–65',senPool,senR,true,ch==='FB'?'#6D28D9':'#E11D74'],
+               ['Young 25–35',yngPool,yngR,false,ch==='FB'?'#A78BFA':'#F472B6']];
+    return rows.map(r=>{const cov=Math.min(1,r[2]/r[1]);
+      return `<div class="audrow"><div class="name">${r[0]}${r[3]?'<span class="pri">PRIMARY</span>':''}<small>pool ${fTr(r[1])}</small></div>
+      <div class="covbar"><i style="width:${cov*100}%;background:${r[4]}"></i><span class="txt">${fPct(cov,0)} · ~${fTr(r[2])}</span></div></div>`;
+    }).join('');
+  }
+  document.getElementById('audFB').innerHTML=audBars('FB');
+  document.getElementById('audTT').innerHTML=audBars('TT');
+
+  // table: spend & key metric by audience (all objectives)
+  const aud=['Senior','Young'];
+  const rows=aud.map(a=>{
+    const s=sumRows(D.aud.filter(x=>x.aud===a));
+    return {a,s};
+  });
+  const other=sumRows(D.aud.filter(x=>x.aud!=='Senior'&&x.aud!=='Young'));
+  const totalSpend=D.aud.reduce((x,r)=>x+r.spend,0);
+  let body=rows.map(r=>`<tr>
+    <td><span class="tag-obj">${r.a==='Senior'?'<span class="pri" style="font-size:9.5px;font-weight:800;color:var(--gold-deep);background:var(--gold-soft);padding:1px 6px;border-radius:999px">PRIMARY</span> ':''}${r.a} ${r.a==='Senior'?'36–65':'25–35'}</span></td>
+    <td class="num">${fTr(r.s.spend)}</td>
+    <td class="num">${fPct(r.s.spend/totalSpend,0)}</td>
+    <td class="num">${f0(r.s.impr)}</td>
+    <td class="num">${f0(r.s.install)}</td>
+    <td class="num">${f0(r.s.reg)}</td>
+    <td class="num">${f0(r.s.pagelike+r.s.follow)}</td></tr>`).join('');
+  if(other.spend>0)body+=`<tr><td>Khác / Retarget</td><td class="num">${fTr(other.spend)}</td><td class="num">${fPct(other.spend/totalSpend,0)}</td><td class="num">${f0(other.impr)}</td><td class="num">${f0(other.install)}</td><td class="num">${f0(other.reg)}</td><td class="num">${f0(other.pagelike+other.follow)}</td></tr>`;
+  document.getElementById('audTable').innerHTML=`
+    <thead><tr><th>Tệp</th><th>Thực chi</th><th>% chi</th><th>Impr</th><th>Tải app</th><th>Đăng ký</th><th>Like+Follow</th></tr></thead><tbody>${body}</tbody>`;
+
+  const senShare=rows[0].s.spend/totalSpend;
+  document.getElementById('sn5').innerHTML=`
+  <div class="box sum"><h4>📌 Tóm tắt</h4><ul>
+    <li>Tệp <b>Senior 36–65 chiếm ${fPct(senShare,0)}</b> tổng chi — đúng định hướng primary của khách.</li>
+    <li>Poolsize Senior: FB ${fTr(pool.FB.Senior)}, TikTok ${fTr(pool.TT.Senior)}; độ phủ FB đậm hơn TikTok.</li>
+    <li>TikTok còn tệp <b>Young</b> pool rất lớn (${fTr(pool.TT.Young)}) — dư địa mở rộng reach.</li>
+  </ul></div>
+  <div class="box next"><h4>🎯 Next actions</h4><ul>
+    <li>Bật audience-breakdown trên nền tảng để đo reach dedup thực theo từng tệp.</li>
+    <li>Tăng đầu tư Senior TikTok (mới phủ ~${fPct(cov.tt,0)}) song song giữ Senior FB.</li>
+    <li>Xin tệp CDP khách gửi tiết kiệm để targeting chuẩn hơn mùa sau.</li>
+  </ul></div>`;
+
+  document.getElementById('reachNote').innerHTML=`<b>Lưu ý đọc số reach & tần suất:</b> dữ liệu export theo dòng (ngày × nhóm quảng cáo) nên <b>reach cộng dồn sẽ bị đếm trùng</b> người — vì vậy độ phủ ở trên dùng <b>reach dedup theo kế hoạch</b> (11,57tr FB + 3,18tr TikTok) chia poolsize, và <b>tần suất</b> lấy mục tiêu kế hoạch. Muốn con số reach/frequency <b>dedup thực tế</b>, cần kéo thêm ở account-level (Meta/TikTok) — em ghép vào ngay khi có.`;
+}
+
+/* ---- filters UI ---- */
+function renderFilters(){
+  const box=document.getElementById('filters');
+  box.innerHTML=PRESETS.map(p=>`<button class="chip-btn ${p[0]===STATE.key?'on':''}" data-k="${p[0]}">${p[1]}</button>`).join('');
+  box.querySelectorAll('.chip-btn').forEach(b=>b.onclick=()=>{
+    STATE.key=b.dataset.k;
+    document.getElementById('customRange').classList.toggle('show',STATE.key==='custom');
+    if(STATE.key!=='custom'){renderFilters();render();}
+    else renderFilters();
+  });
+}
+function setupCustom(){
+  document.getElementById('cFrom').value=D.date_min;
+  document.getElementById('cTo').value=D.date_max;
+  document.getElementById('cApply').onclick=()=>{
+    STATE.from=toDate(document.getElementById('cFrom').value);
+    STATE.to=toDate(document.getElementById('cTo').value);
+    render();
+  };
+}
+
+/* ---- boot ---- */
+(async function(){
+  D=await loadData();
+  buildRanges(D);
+  renderFilters(); setupCustom();
+  render();            // filter-driven sections
+  renderContent();     // full campaign
+  renderAudience();    // full campaign
+  document.getElementById('footer').innerHTML=
+    '<b>Vikki × PMAX</b> · Trúng Ngựa Vàng Ký (mùa 3) · Báo cáo hiệu suất trực tiếp<br>'+
+    'Nguồn: Master File — FB_PAXY · TT_PAXY (actual) · Media plan 22/6 (KPI). Tổng thực chi đã đối chiếu khớp DB TOTAL (chênh &lt;0,03%). Cập nhật '+D.date_max+'.';
+})();
+</script>
+</body>
+</html>
